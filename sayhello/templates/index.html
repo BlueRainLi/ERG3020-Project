@@ -7,18 +7,29 @@
         {{ render_form(fact_form, action=request.full_path) }}
     </div>
 
+    <h5>Named Entities</h5>
     <div class="list-group">
-    <h5>
-        Name Entities (Person): {{ nen_per}}
-    </h5>
-    <h5>
-        Name Entities (Organisation): {{ nen_org}}
-    </h5>
-    <h5>
-        Name Entities (Location): {{ nen_loc}}
-    </h5>
-    </div>
+            <a class="list-group-item list-group-item-action flex-column">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 text-success">Person</h5>
+                </div>
+                <p class="mb-1">{{ nen_per }}</p>
+            </a>
+        <a class="list-group-item list-group-item-action flex-column">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 text-success">Organization</h5>
+                </div>
+                <p class="mb-1">{{ nen_org }}</p>
+            </a>
+        <a class="list-group-item list-group-item-action flex-column">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 text-success">Location</h5>
+                </div>
+                <p class="mb-1">{{ nen_loc }}</p>
+            </a>
 
+
+    </div>
     <p></p>
 
     <!-- This is Predicates Rank 1 -->

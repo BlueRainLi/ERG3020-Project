@@ -52,7 +52,7 @@ def index():
                     for i in range(len(query_result[3])):
                         utils.commonDB.add(query_result[3][i], query_result[4][i])
                         print(query_result[3][i], query_result[4][i])
-                    utils.commonDB.commit()
+                    utils.commonDB.commit() # Commit your comments
                 else:
                     entity = None
                     c_type = "Emotional"
@@ -79,7 +79,7 @@ def index():
         elif i.c_type == "Emotional":
             emotionals.append(i)
 
-    # for i in
+
     entity_dict = utils.commonDB.fetch()
     nen_per = ','.join(entity_dict['PER'])
     nen_loc = ','.join(entity_dict['LOC'])
