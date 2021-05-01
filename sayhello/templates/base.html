@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Say Hello!{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+</head>
+
+
+
+<body>
+<main class="container">
+    <header>
+        <h1 class="text-center display-4">
+            <a href="{{ url_for('index') }}" class="text-success"><strong>ERG3020 DEMO</strong></a>
+            <small class="text-muted sub-title">to the world</small>
+        </h1>
+        <h4 class="text-center">
+            <small>Discussion Topic: The money was stolen. Who stole the money?</small>
+        </h4>
+
+        <h6 class="text-center">
+            <small>版本2.0: 选择Fact，输入一句英语简单句子，它将利用自然语言处理(AllenNLP)算法自动转化为原子从句(Atom Clauses)</small>
+        </h6>
+
+    </header>
+
+
+
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+
+
+
+    <footer class="text-center">
+        {% block footer %}
+            <p>a CUHK(SZ) ERG3020 Project</p>
+        {% endblock %}
+    </footer>
+</main>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+{{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
+</body>
+</html>
