@@ -52,7 +52,11 @@ def index():
                     for i in range(len(query_result[3])):
                         utils.commonDB.add(query_result[3][i], query_result[4][i])
                         print(query_result[3][i], query_result[4][i])
-                    utils.commonDB.commit() # Commit your comments
+                    utils.commonDB.commit()  # Commit your comments
+
+                    utils.funcDB.add(query_result[0]['verb'],query_result[4])
+                    utils.funcDB.commit()
+
                 else:
                     entity = None
                     c_type = "Emotional"

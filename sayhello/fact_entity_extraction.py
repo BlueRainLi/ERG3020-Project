@@ -3,7 +3,7 @@ import os
 import sys
 from sayhello import app
 from nltk.stem.wordnet import WordNetLemmatizer
-from sayhello.commonDataProcess import CommonDatabase
+from sayhello.commonDataProcess import CommonDatabase, CommonFunction
 
 
 class OpenInfoPredictor:
@@ -48,7 +48,10 @@ class UserPredict:
         self.openInfoEngine = OpenInfoPredictor()
         # self.entailEngine = EntailmentPredictor()
         self.nameEntityEngine = NameEntityPredictor()
+
         self.commonDB = CommonDatabase("nen.cmdata")
+        self.funcDB = CommonFunction("func.cmdata")
+
         self.verb_database = []
         self.entity_database_per = []
         self.entity_database_org = []
