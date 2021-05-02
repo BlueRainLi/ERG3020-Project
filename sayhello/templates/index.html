@@ -60,17 +60,18 @@
         {% for fact in facts %}
             <a class="list-group-item list-group-item-action flex-column">
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1 text-success">{{ fact.body}}
+                    <h5 class="mb-1 text-success">{{ fact.nl_body}}
                        <!-- <small class="text-muted"> #{{ loop.revindex }}</small> -->
                     </h5>
+                    <!--
                     <small data-toggle="tooltip" data-placement="top"
                            data-timestamp="{{ fact.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
                            data-delay="500">
                         {{ moment(fact.timestamp).fromNow(refresh=True) }}
                     </small>
+                    -->
                 </div>
                 <p class="mb-1">{{ fact.body }}</p>
-                <p class="mb-2">{{ fact.nl_body }}</p>
             </a>
         {% endfor %}
     </div>
