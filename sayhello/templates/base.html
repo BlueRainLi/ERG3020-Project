@@ -28,7 +28,9 @@
 
     </header>
 
-
+    <form action="/refresh" method="get" class="form">
+        <button name="refresh" type="button" class="button">Refresh the data</button>
+    </form>
 
     {% for message in get_flashed_messages() %}
         <div class="alert alert-info">

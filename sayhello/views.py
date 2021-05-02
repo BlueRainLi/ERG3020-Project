@@ -6,6 +6,7 @@
     :license: MIT, see LICENSE for more details.
 """
 from flask import flash, redirect, url_for, render_template
+import sqlite3
 
 from sayhello import app, db
 from sayhello.forms import HelloForm, RestoreForm
@@ -18,12 +19,13 @@ from sayhello.commands import forge, initdb
 
 #
 utils = UserPredict()
+
+
 #
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-
     fact_form = HelloForm()
 
     if fact_form.validate_on_submit():
@@ -79,7 +81,6 @@ def index():
         elif i.c_type == "Emotional":
             emotionals.append(i)
 
-
     entity_dict = utils.commonDB.fetch()
     nen_per = ','.join(entity_dict['PER'])
     nen_loc = ','.join(entity_dict['LOC'])
@@ -87,3 +88,12 @@ def index():
     return render_template('index.html', fact_form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,
                            nen_loc=nen_loc, nen_org=nen_org)
+
+
+@app.route('/refresh', methods=["GET"])
+def refresh():
+    conn = sqlite3.connect("data.db")
+    cur = conn.cursor()
+    cur.execute("DELETE FROM message")
+    conn.close()
+    return redirect(url_for("/"))
