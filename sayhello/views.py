@@ -8,7 +8,7 @@
 from flask import flash, redirect, url_for, render_template
 
 from sayhello import app, db
-from sayhello.forms import HelloForm, RestoreForm
+from sayhello.forms import HelloForm
 from sayhello.models import Message
 
 # This is AI algorithm
@@ -28,10 +28,10 @@ utils = UserPredict()
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
-    type_form = HelloForm()
+    """    type_form = HelloForm()
 
     if type_form.submit():
-        print("Query Caught!")
+        print("Query Caught!")"""
 
 
     fact_form = HelloForm()
