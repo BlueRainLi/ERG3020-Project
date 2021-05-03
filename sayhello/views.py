@@ -37,39 +37,34 @@ def index():
         nl_body = body
 
         # Handle if user input facts
-        if c_type == "cls":
-            if body == "1234":
-                forge(1)
-                print("database deleted.")
-        else:
-            if c_type == "Facts":
-                query_result = utils.query(body)
+        if c_type == "Facts":
+            query_result = utils.query(body)
 
-                if query_result:
-                    atom_clau = query_result[1]
-                    # print(atom_clause)
-                    body = str(atom_clau)
-                    entity = str(query_result[2])
+            if query_result:
+                atom_clau = query_result[1]
+                # print(atom_clause)
+                body = str(atom_clau)
+                entity = str(query_result[2])
 
-                    # Commit to entity database
-                    for i in range(len(query_result[3])):
-                        utils.commonDB.add(query_result[3][i], query_result[4][i])
-                        print(query_result[3][i], query_result[4][i])
-                    utils.commonDB.commit()  # Commit your comments
+                # Commit to entity database
+                for i in range(len(query_result[3])):
+                    utils.commonDB.add(query_result[3][i], query_result[4][i])
+                    print(query_result[3][i], query_result[4][i])
+                utils.commonDB.commit()  # Commit your comments
 
-                    utils.funcDB.add(query_result[0]['verb'],query_result[4])
-                    utils.funcDB.commit()
+                utils.funcDB.add(query_result[0]['verb'],query_result[4])
+                utils.funcDB.commit()
 
-                else:
-                    entity = None
-                    c_type = "Emotional"
+            else:
+                entity = None
+                c_type = "Emotional"
 
-            message = Message(body=body, c_type=c_type, nl_body=nl_body, entity=entity)
-            db.session.add(message)
-            db.session.commit()
+        message = Message(body=body, c_type=c_type, nl_body=nl_body, entity=entity)
+        db.session.add(message)
+        db.session.commit()
 
-            flash('Published 1 comment.')
-            return redirect(url_for('index'))
+        flash('Published 1 comment.')
+        return redirect(url_for('index'))
 
     messages = Message.query.order_by(Message.timestamp.desc()).all()
 
@@ -97,9 +92,16 @@ def index():
 
 @app.route('/refresh', methods=["GET"])
 def refresh():
-    print("Deleted ? Database")
-    url = os.path.dirname(app.root_path) + "data.db"
-    print(url)
     db.drop_all()
     db.create_all()
+    print("Deleted comments Database")
+
+    # Clear Named entity
+    nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/nen.cmdata"
+    print(nen_url)
+
+    with open(nen_url, mode='w') as file:
+        file.write("")
+
     return redirect(url_for("index"))
+

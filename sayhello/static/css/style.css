@@ -1,5 +1,7 @@
 body {
     background-color: rgb(245, 245, 245) !important;
+    margin: 20%;
+    padding: 20%;
 }
 
 p {
@@ -8,7 +10,6 @@ p {
 }
 
 .container {
-    max-width: 640px !important;
 }
 
 .hello-form {
