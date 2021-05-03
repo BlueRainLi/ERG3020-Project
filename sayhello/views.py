@@ -6,7 +6,6 @@
     :license: MIT, see LICENSE for more details.
 """
 from flask import flash, redirect, url_for, render_template
-import sqlite3
 
 from sayhello import app, db
 from sayhello.forms import HelloForm, RestoreForm
@@ -16,6 +15,8 @@ from sayhello.models import Message
 from sayhello.fact_entity_extraction import UserPredict
 
 from sayhello.commands import forge, initdb
+
+import os
 
 #
 utils = UserPredict()
@@ -96,8 +97,9 @@ def index():
 
 @app.route('/refresh', methods=["GET"])
 def refresh():
-    conn = sqlite3.connect("data.db")
-    cur = conn.cursor()
-    cur.execute("DELETE FROM message")
-    conn.close()
-    return redirect(url_for("/"))
+    print("Deleted ? Database")
+    url = os.path.dirname(app.root_path) + "data.db"
+    print(url)
+    db.drop_all()
+    db.create_all()
+    return redirect(url_for("index"))
