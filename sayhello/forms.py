@@ -21,11 +21,6 @@ class HelloForm(FlaskForm):
     submit = SubmitField(label='Submit')
 
 
-class RestoreForm(FlaskForm):
-    password = TextAreaField('Admin:', validators=[DataRequired(), Length(1, 200)])
-    submit = SubmitField(label='Clear Knowledge Base')
-
-
 class RenderForm(FlaskForm):
     submit = SubmitField()
 

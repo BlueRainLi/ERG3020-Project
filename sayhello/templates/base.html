@@ -40,9 +40,11 @@
         {% block footer %}
             <p>a CUHK(SZ) ERG3020 Project</p>
         {% endblock %}
-            <form action="/refresh" method="get" class="hello-form">
+
+            <form action="/refresh" method="get" class="btn">
                 <button name="refresh" type=submit class="button">Refresh the data</button>
             </form>
+
     </footer>
 
 </main>
@@ -52,5 +54,10 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
 {{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
+
+<script type="text/javascript">
+
+</script>
+
 </body>
 </html>

@@ -27,6 +27,13 @@ utils = UserPredict()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+
+    type_form = HelloForm()
+
+    if type_form.submit():
+        print("Query Caught!")
+
+
     fact_form = HelloForm()
 
     if fact_form.validate_on_submit():
@@ -89,7 +96,7 @@ def index():
     nen_org = ','.join(entity_dict['ORG'])
     functions = utils.funcDB.fetch()
 
-    return render_template('index.html', fact_form=fact_form,
+    return render_template('index.html', form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,
                            nen_loc=nen_loc, nen_org=nen_org, functions=functions)
 
