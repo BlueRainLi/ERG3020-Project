@@ -56,8 +56,10 @@ def index():
                 utils.funcDB.commit()
 
             else:
+                # seems like emotional!
                 entity = None
                 c_type = "Emotional"
+
 
         message = Message(body=body, c_type=c_type, nl_body=nl_body, entity=entity)
         db.session.add(message)
@@ -102,6 +104,15 @@ def refresh():
 
     with open(nen_url, mode='w') as file:
         file.write("")
+
+    # Clear Functions
+    nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/func.cmdata"
+    print(nen_url)
+
+    with open(nen_url, mode='w') as file:
+        file.write("")
+
+
 
     return redirect(url_for("index"))
 

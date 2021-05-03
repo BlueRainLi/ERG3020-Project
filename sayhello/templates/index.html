@@ -7,7 +7,7 @@
         {{ render_form(fact_form, action=request.full_path) }}
     </div>
 
-    <h5>Named Entities</h5>
+    <h5>Named Entities Mentioned</h5>
     <div class="list-group">
             <a class="list-group-item list-group-item-action flex-column">
                 <div class="d-flex w-100 justify-content-between">
@@ -31,6 +31,34 @@
 
     </div>
     <p></p>
+
+    <!-- Functions -->
+    <h5>Functions Mentioned</h5>
+    <div class="list-group">
+            <a class="list-group-item list-group-item-action flex-column">
+                {% for function in functions %}
+                <!--
+                <div class="d-flex w-100 justify-content-between">
+
+                    <h5 class="mb-1 text-success">
+                        <small class="text-muted"> #{{ loop.revindex }}</small>
+                    </h5>
+                    -->
+                    <!--
+                    <small data-toggle="tooltip" data-placement="top"
+                           data-timestamp="{{ predicate.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
+                           data-delay="500">
+                        {{ moment(predicate.timestamp).fromNow(refresh=True) }}
+                    </small>
+
+                </div>
+                -->
+                <p class="mb-1">{{ function}}</p>
+            </a>
+                {% endfor %}
+    </div>
+    <p></p>
+
 
     <!-- This is Predicates Rank 1 -->
     <h5>{{ predicates|length }} Predicates</h5>
