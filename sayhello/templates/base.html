@@ -44,12 +44,12 @@
 
     <footer class="text-center">
         {% block footer %}
-            <p>a CUHK(SZ) ERG3020 Project</p>
+            <p>A CUHK(SZ) ERG3020 Project</p>
         {% endblock %}
 
-            <form action="/refresh" method="get">
-                <button name="refresh" type=submit class="btn">Refresh the data</button>
-            </form>
+        <form action="/refresh" method="get">
+            <button name="refresh" type=submit class="btn btn-secondary">Refresh the data</button>
+        </form>
 
     </footer>
 
@@ -59,6 +59,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/Action.js') }}"></script>
 {{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
 
 <script type="text/javascript">
