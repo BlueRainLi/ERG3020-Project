@@ -54,21 +54,26 @@
                   <div class="container">
                     <!-- 胶囊选项卡 -->
                     <ul class="nav nav-pills">
-                        <li class="active"><a href="#pan1" data-toggle="pill" class="btn btn-secondary" style="margin: 10px">Facts</a></li>
-                        <li><a href="#pan2" data-toggle="pill" class="btn btn-secondary" style="margin: 10px">Predicate and Logic</a></li>
-                        <li><a href="#pan3" data-toggle="pill" class="btn btn-secondary" style="margin: 10px">Emotional</a></li>
+                        <li class="active"><a href="#pan1" data-toggle="pill" class="btn btn-success" style="margin: 10px" id="facts_btn" onclick="change_fact('Facts')">Facts</a></li>
+                        <li><a href="#pan2" data-toggle="pill" class="btn btn-success" style="margin: 10px" id="pred_btn" onclick="change_fact('Predicates')">Predicate and Logic</a></li>
+                        <li><a href="#pan3" data-toggle="pill" class="btn btn-success" style="margin: 10px" id="emo_btn" onclick="change_fact('Emotional')">Emotional</a></li>
                     </ul>
                     <!-- 面板 -->
                     <div class="tab-content">
-                        <div class="tab-pane active" id="pan1">You can provide some facts (pls try to use Third Person) and pay attention to proper grammar.
+                        <div class="tab-pane active" id="pan1">You can tell us some facts (in Third Person) and pay attention to grammar.
                             <div class="hello-form">
-                                {{ render_form(fact_form, action=request.full_path) }}
+
                             </div>
                         </div>
-                        <div class="tab-pane" id="pan2">搜索面板内容搜索面板内容</div>
-                        <div class="tab-pane" id="pan3">工具面板内容工具面板内容</div>
+                        <div class="tab-pane" id="pan2">We expect some educated people to post here.
+                        </div>
+                        <div class="tab-pane" id="pan3">
+                            工具面板内容工具面板内容
+                        </div>
+
                     </div>
                   </div>
+              {{ render_form(fact_form, action=request.full_path) }}
 
 
           </td>

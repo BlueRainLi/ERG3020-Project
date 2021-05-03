@@ -19,6 +19,7 @@ from sayhello.commands import forge, initdb
 import os
 
 #
+# utils = UserPredict(debug_mode=False)
 utils = UserPredict(debug_mode=False)
 
 
@@ -33,14 +34,20 @@ def index():
     if type_form.submit():
         print("Query Caught!")"""
 
-
     fact_form = HelloForm()
 
     if fact_form.validate_on_submit():
         body = fact_form.body_textarea.data
-        c_type = "Facts"
+
+        print("-------------")
+        print(body)
+        print("-------------")
+
+        c_type = fact_form.c_type.data
 
         nl_body = body
+
+        print(c_type)
 
         # Handle if user input facts
         if c_type == "Facts":
@@ -66,8 +73,7 @@ def index():
                 entity = None
                 c_type = "Emotional"
 
-
-        message = Message(body=body, c_type=c_type, nl_body=nl_body, entity=entity)
+        message = Message(body=body, c_type=c_type, nl_body=nl_body)
         db.session.add(message)
         db.session.commit()
 

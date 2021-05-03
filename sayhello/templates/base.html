@@ -7,6 +7,11 @@
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <script type="text/jscript">
+        function change_fact(c_type){
+            document.getElementById("c_type").value=c_type;
+        }
+    </script>
 </head>
 
 
@@ -58,8 +63,14 @@
 
 <script type="text/javascript">
 document.getElementById("submit_btn").className = "btn btn-primary"
-</script>
+document.getElementById("c_type").style="display: none"
+document.getElementById("c_type").value="Facts"
 
+</script>
+<!--
+
+"
+-->
 
 
 

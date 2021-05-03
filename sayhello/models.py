@@ -19,5 +19,4 @@ class Message(db.Model):
     c_type = db.Column(db.String(20))
     body = db.Column(db.String(200))
     nl_body = db.Column(db.String(200))
-    entity = db.Column(db.String(200))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)

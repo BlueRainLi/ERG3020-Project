@@ -42,7 +42,6 @@ def forge(count):
             body="None",
             c_type="None",
             nl_body="None",
-            entity="None",
             timestamp=fake.date_time_this_year()
         )
         print(message)
