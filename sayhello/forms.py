@@ -15,16 +15,10 @@ from wtforms import RadioField
 class HelloForm(FlaskForm):
     # name = StringField('Name', validators=[DataRequired(), Length(1, 20)])
     c_type = RadioField('Type of comments',
-                        choices=[('Facts','Facts'),('Predicates','Predicates'),('Emotional','Emotional'),
-                                 ('cls', '删库跑路')],
+                        choices=[('Facts','Facts'),('Predicates','Predicates'),('Emotional','Emotional')],
                         validators=[DataRequired(), Length(1, 20)])
-    body = TextAreaField('Your comments', validators=[DataRequired(), Length(1, 200)])
-    submit = SubmitField(label='Submit')
-
-
-class RestoreForm(FlaskForm):
-    password = TextAreaField('Admin:', validators=[DataRequired(), Length(1, 200)])
-    submit = SubmitField(label='Clear Knowledge Base')
+    body_textarea = TextAreaField('Your comments', validators=[DataRequired(), Length(1, 200)])
+    submit_btn = SubmitField(label='Submit')
 
 
 class RenderForm(FlaskForm):

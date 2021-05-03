@@ -3,101 +3,153 @@
 
 {% block content %}
 
-    <div class="hello-form">
-        {{ render_form(fact_form, action=request.full_path) }}
-    </div>
+<table width="100%" border="0" style="vertical-align: top">
+      <tbody>
+        <tr>
+          <td width="38%" style="vertical-align: top">
+              <!--Name Entities and Functions-->
+                  <h5>Named Entities Mentioned</h5>
+                    <div class="list-group">
+                            <a class="list-group-item list-group-item-action flex-column">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1 text-success">Person</h5>
+                                </div>
+                                <p class="mb-1">{{ nen_per }}</p>
+                            </a>
+                        <a class="list-group-item list-group-item-action flex-column">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1 text-success">Organization</h5>
+                                </div>
+                                <p class="mb-1">{{ nen_org }}</p>
+                            </a>
+                        <a class="list-group-item list-group-item-action flex-column">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1 text-success">Location</h5>
+                                </div>
+                                <p class="mb-1">{{ nen_loc }}</p>
+                            </a>
 
-    <h5>Named Entities</h5>
-    <div class="list-group">
-            <a class="list-group-item list-group-item-action flex-column">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1 text-success">Person</h5>
-                </div>
-                <p class="mb-1">{{ nen_per }}</p>
-            </a>
-        <a class="list-group-item list-group-item-action flex-column">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1 text-success">Organization</h5>
-                </div>
-                <p class="mb-1">{{ nen_org }}</p>
-            </a>
-        <a class="list-group-item list-group-item-action flex-column">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1 text-success">Location</h5>
-                </div>
-                <p class="mb-1">{{ nen_loc }}</p>
-            </a>
+
+                    </div>
+                    <p></p>
+
+                    <!-- Functions -->
+                    <h5>Functions Mentioned</h5>
+                    <div class="list-group">
+                        {% for function in functions %}
+                            <a class="list-group-item list-group-item-action flex-column">
+                                <p class="mb-2">{{ function}}</p>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <p></p>
+              <!-- information extraction module ended -->
+
+          </td>
+            <td width="4%" style="vertical-align: top">&nbsp;</td>
+
+          <td width="58%" style="vertical-align: top">
+              <!-- Input Area -->
+              <h5>Any Comments?</h5>
+                  <div class="container">
+                    <!-- 胶囊选项卡 -->
+                    <ul class="nav nav-pills">
+                        <li class="active"><a href="#pan1" data-toggle="pill">  发现  </a></li>
+                        <li><a href="#pan2" data-toggle="pill">  搜索  </a></li>
+                        <li><a href="#pan3" data-toggle="pill">  工具  </a></li>
+                    </ul>
+                    <!-- 面板 -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="pan1">发现面板内容发现面板内容
+                            <div class="hello-form">
+                                {{ render_form(form, action=request.full_path) }}
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="pan2">搜索面板内容搜索面板内容</div>
+                        <div class="tab-pane" id="pan3">工具面板内容工具面板内容</div>
+                    </div>
+                  </div>
 
 
-    </div>
-    <p></p>
+          </td>
+        </tr>
 
-    <!-- This is Predicates Rank 1 -->
-    <h5>{{ predicates|length }} Predicates</h5>
-    <div class="list-group">
-        {% for predicate in predicates %}
-            <a class="list-group-item list-group-item-action flex-column">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1 text-success">{{ predicate.c_type}}
-                       <!-- <small class="text-muted"> #{{ loop.revindex }}</small> -->
-                    </h5>
-                    <small data-toggle="tooltip" data-placement="top"
-                           data-timestamp="{{ predicate.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
-                           data-delay="500">
-                        {{ moment(predicate.timestamp).fromNow(refresh=True) }}
-                    </small>
+        <tr>
+          <td style="vertical-align: top">&nbsp;</td>
+            <td style="vertical-align: top">&nbsp;</td>
+          <td style="vertical-align: top">
+              <!--Comments area -->
+              <!-- This is Predicates Rank 1 -->
+                <h5>{{ predicates|length }} Predicates</h5>
+                <div class="list-group">
+                    {% for predicate in predicates %}
+                        <a class="list-group-item list-group-item-action flex-column">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-success">{{ predicate.c_type}}
+                                   <!-- <small class="text-muted"> #{{ loop.revindex }}</small> -->
+                                </h5>
+                                <small data-toggle="tooltip" data-placement="top"
+                                       data-timestamp="{{ predicate.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
+                                       data-delay="500">
+                                    {{ moment(predicate.timestamp).fromNow(refresh=True) }}
+                                </small>
+                            </div>
+                            <p class="mb-1">{{ predicate.body }}</p>
+                            <p class="mb-2">{{ predicate.nl_body }}</p>
+                        </a>
+                    {% endfor %}
                 </div>
-                <p class="mb-1">{{ predicate.body }}</p>
-                <p class="mb-2">{{ predicate.nl_body }}</p>
-            </a>
-        {% endfor %}
-    </div>
-    <p></p>
-    <!-- Facts will be displayed at 2 -->
+                <p></p>
+                <!-- Facts will be displayed at 2 -->
 
-    <h5>{{ facts|length }} Facts</h5>
-    <div class="list-group">
-        {% for fact in facts %}
-            <a class="list-group-item list-group-item-action flex-column">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1 text-success">{{ fact.nl_body}}
-                       <!-- <small class="text-muted"> #{{ loop.revindex }}</small> -->
-                    </h5>
-                    <!--
-                    <small data-toggle="tooltip" data-placement="top"
-                           data-timestamp="{{ fact.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
-                           data-delay="500">
-                        {{ moment(fact.timestamp).fromNow(refresh=True) }}
-                    </small>
-                    -->
+                <h5>{{ facts|length }} Facts</h5>
+                <div class="list-group">
+                    {% for fact in facts %}
+                        <a class="list-group-item list-group-item-action flex-column">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-success">{{ fact.nl_body}}
+                                   <!-- <small class="text-muted"> #{{ loop.revindex }}</small> -->
+                                </h5>
+                                <!--
+                                <small data-toggle="tooltip" data-placement="top"
+                                       data-timestamp="{{ fact.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
+                                       data-delay="500">
+                                    {{ moment(fact.timestamp).fromNow(refresh=True) }}
+                                </small>
+                                -->
+                            </div>
+                            <p class="mb-1">{{ fact.body }}</p>
+                        </a>
+                    {% endfor %}
                 </div>
-                <p class="mb-1">{{ fact.body }}</p>
-            </a>
-        {% endfor %}
-    </div>
-    <p></p>
-    <!-- Emotional -->
-    <h5>{{ emotionals|length }} Emotionals</h5>
-    <div class="list-group">
-        {% for emotional in emotionals %}
-            <a class="list-group-item list-group-item-action flex-column">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1 text-success">{{ emotional.c_type}}
-                       <!-- <small class="text-muted"> #{{ loop.revindex }}</small> -->
-                    </h5>
-                    <small data-toggle="tooltip" data-placement="top"
-                           data-timestamp="{{ emotional.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
-                           data-delay="500">
-                        {{ moment(emotional.timestamp).fromNow(refresh=True) }}
-                    </small>
+                <p></p>
+                <!-- Emotional -->
+                <h5>{{ emotionals|length }} Emotionals</h5>
+                <div class="list-group">
+                    {% for emotional in emotionals %}
+                        <a class="list-group-item list-group-item-action flex-column">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-success">{{ emotional.c_type}}
+                                   <!-- <small class="text-muted"> #{{ loop.revindex }}</small> -->
+                                </h5>
+                                <small data-toggle="tooltip" data-placement="top"
+                                       data-timestamp="{{ emotional.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
+                                       data-delay="500">
+                                    {{ moment(emotional.timestamp).fromNow(refresh=True) }}
+                                </small>
+                            </div>
+                            <!--
+                            <p class="mb-1">{{ emotional.entity }}</p>
+                            -->
+                            <p class="mb-2">{{ emotional.nl_body }}</p>
+                        </a>
+                    {% endfor %}
                 </div>
-                <!--
-                <p class="mb-1">{{ emotional.entity }}</p>
-                -->
-                <p class="mb-2">{{ emotional.nl_body }}</p>
-            </a>
-        {% endfor %}
-    </div>
+
+          </td>
+        </tr>
+      </tbody>
+</table>
 
 
 {% endblock %}
