@@ -41,8 +41,8 @@
             <p>a CUHK(SZ) ERG3020 Project</p>
         {% endblock %}
 
-            <form action="/refresh" method="get" class="btn">
-                <button name="refresh" type=submit class="button">Refresh the data</button>
+            <form action="/refresh" method="get">
+                <button name="refresh" type=submit class="btn">Refresh the data</button>
             </form>
 
     </footer>
@@ -56,8 +56,13 @@
 {{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
 
 <script type="text/javascript">
-
+document.getElementById("submit_btn").className = "btn btn-primary"
 </script>
+
+
+
+
+
 
 </body>
 </html>

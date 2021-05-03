@@ -17,8 +17,8 @@ class HelloForm(FlaskForm):
     c_type = RadioField('Type of comments',
                         choices=[('Facts','Facts'),('Predicates','Predicates'),('Emotional','Emotional')],
                         validators=[DataRequired(), Length(1, 20)])
-    body = TextAreaField('Your comments', validators=[DataRequired(), Length(1, 200)])
-    submit = SubmitField(label='Submit')
+    body_textarea = TextAreaField('Your comments', validators=[DataRequired(), Length(1, 200)])
+    submit_btn = SubmitField(label='Submit')
 
 
 class RenderForm(FlaskForm):

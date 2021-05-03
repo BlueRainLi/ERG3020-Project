@@ -37,8 +37,7 @@ def index():
     fact_form = HelloForm()
 
     if fact_form.validate_on_submit():
-        # name = form.name.data
-        body = fact_form.body.data
+        body = fact_form.body_textarea.data
         c_type = fact_form.c_type.data
 
         nl_body = body
