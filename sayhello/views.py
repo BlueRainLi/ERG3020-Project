@@ -87,9 +87,11 @@ def index():
     nen_per = ','.join(entity_dict['PER'])
     nen_loc = ','.join(entity_dict['LOC'])
     nen_org = ','.join(entity_dict['ORG'])
+    functions = utils.funcDB.fetch()
+
     return render_template('index.html', fact_form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,
-                           nen_loc=nen_loc, nen_org=nen_org)
+                           nen_loc=nen_loc, nen_org=nen_org, functions=functions)
 
 
 @app.route('/refresh', methods=["GET"])
@@ -100,6 +102,9 @@ def refresh():
 
     # Clear Named entity
     nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/nen.cmdata"
+
+    # Clear caches:
+    utils.commonDB.comments = {'PER': [], 'LOC': [], 'ORG': []}
     print(nen_url)
 
     with open(nen_url, mode='w') as file:
@@ -107,12 +112,12 @@ def refresh():
 
     # Clear Functions
     nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/func.cmdata"
+    # Clear caches:
+    utils.funcDB.comments = []
     print(nen_url)
 
     with open(nen_url, mode='w') as file:
         file.write("")
-
-
 
     return redirect(url_for("index"))
 

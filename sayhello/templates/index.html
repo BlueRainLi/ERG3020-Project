@@ -35,27 +35,11 @@
     <!-- Functions -->
     <h5>Functions Mentioned</h5>
     <div class="list-group">
+        {% for function in functions %}
             <a class="list-group-item list-group-item-action flex-column">
-                {% for function in functions %}
-                <!--
-                <div class="d-flex w-100 justify-content-between">
-
-                    <h5 class="mb-1 text-success">
-                        <small class="text-muted"> #{{ loop.revindex }}</small>
-                    </h5>
-                    -->
-                    <!--
-                    <small data-toggle="tooltip" data-placement="top"
-                           data-timestamp="{{ predicate.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
-                           data-delay="500">
-                        {{ moment(predicate.timestamp).fromNow(refresh=True) }}
-                    </small>
-
-                </div>
-                -->
-                <p class="mb-1">{{ function}}</p>
+                <p class="mb-2">{{ function}}</p>
             </a>
-                {% endfor %}
+        {% endfor %}
     </div>
     <p></p>
 
