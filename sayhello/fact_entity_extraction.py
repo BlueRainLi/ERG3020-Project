@@ -44,10 +44,12 @@ class NameEntityPredictor:
 
 
 class UserPredict:
-    def __init__(self):
-        self.openInfoEngine = OpenInfoPredictor()
-        # self.entailEngine = EntailmentPredictor()
-        self.nameEntityEngine = NameEntityPredictor()
+    def __init__(self, debug_mode=False):
+        if not debug_mode:
+
+            self.openInfoEngine = OpenInfoPredictor()
+            # self.entailEngine = EntailmentPredictor()
+            self.nameEntityEngine = NameEntityPredictor()
 
         self.commonDB = CommonDatabase("nen.cmdata")
         self.funcDB = CommonFunction("func.cmdata")

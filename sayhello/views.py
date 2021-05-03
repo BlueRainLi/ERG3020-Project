@@ -19,7 +19,7 @@ from sayhello.commands import forge, initdb
 import os
 
 #
-utils = UserPredict()
+utils = UserPredict(debug_mode=False)
 
 
 #
@@ -38,7 +38,7 @@ def index():
 
     if fact_form.validate_on_submit():
         body = fact_form.body_textarea.data
-        c_type = fact_form.c_type.data
+        c_type = "Facts"
 
         nl_body = body
 
@@ -95,7 +95,7 @@ def index():
     nen_org = ','.join(entity_dict['ORG'])
     functions = utils.funcDB.fetch()
 
-    return render_template('index.html', form=fact_form,
+    return render_template('index.html', fact_form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,
                            nen_loc=nen_loc, nen_org=nen_org, functions=functions)
 
