@@ -16,8 +16,12 @@ from sayhello.commonDataProcess import SingleFunction
 from sayhello.mln_pack.mln_utils import write_mln_files
 import os
 
+from sayhello.mln_pack.run import InferenceMachine
+
 #
 # utils = UserPredict(debug_mode=False)
+machine = InferenceMachine()
+
 utils = UserPredict(debug_mode=True)
 
 

@@ -1,10 +1,8 @@
-
 from pracmln import MLN, Database
 from pracmln import query, learn
 from pracmln.mlnlearn import EVIDENCE_PREDS
 import time
 from pracmln.utils import locs
-
 
 
 class InferenceMachine:
@@ -59,6 +57,6 @@ class InferenceMachine:
         print('all test finished after', time.time() - start, 'secs')
 
 
-a = InferenceMachine()
-a.inference()
+"""a = InferenceMachine()
+a.inference()"""
 
