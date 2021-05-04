@@ -61,11 +61,16 @@
                     <!-- 面板 -->
                     <div class="tab-content">
                         <div class="tab-pane active" id="pan1">You can tell us some facts (in Third Person) and pay attention to grammar.
-                            <div class="hello-form">
-
-                            </div>
                         </div>
-                        <div class="tab-pane" id="pan2">We expect some educated people to post here.
+                        <div class="tab-pane" id="pan2">If you want to post here, you are suggested to have a good command of First Order Logic.
+                            <br/>
+                            Logic operators provided here may be useful.
+                            <br/>
+                            <input type="button" name="button" value="!" class="btn btn-info" style="margin: 10px" id="add_not" onclick="add_spec('!')">
+                            <input type="button" name="button" value="=>" class="btn btn-info" style="margin: 10px" id="add_entail" onclick="add_spec('=>')">
+                            <input type="button" name="button" value="<=>" class="btn btn-info" style="margin: 10px" id="add_equal" onclick="add_spec('<=>')">
+                            <input type="button" name="button" value="(" class="btn btn-info" style="margin: 10px" id="add_left" onclick="add_spec('(')">
+                            <input type="button" name="button" value=")" class="btn btn-info" style="margin: 10px" id="add_right" onclick="add_spec(')')">
                         </div>
                         <div class="tab-pane" id="pan3">
                             工具面板内容工具面板内容

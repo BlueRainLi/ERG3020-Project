@@ -10,6 +10,11 @@
     <script type="text/jscript">
         function change_fact(c_type){
             document.getElementById("c_type").value=c_type;
+            document.getElementById("body_textarea").focus()
+        }
+        function add_spec(this_input){
+            document.getElementById("body_textarea").value=document.getElementById("body_textarea").value+this_input;
+            document.getElementById("body_textarea").focus()
         }
     </script>
 </head>
@@ -65,6 +70,7 @@
 document.getElementById("submit_btn").className = "btn btn-primary"
 document.getElementById("c_type").style="display: none"
 document.getElementById("c_type").value="Facts"
+document.getElementById("body_textarea").focus()
 
 </script>
 <!--
