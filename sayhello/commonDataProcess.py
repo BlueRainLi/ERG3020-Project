@@ -105,6 +105,18 @@ class CommonFunction:
         # Commit to database
         return
 
+
+class SingleFunction:
+    def __init__(self, body, n):
+        self.body = body
+        self.n = n
+        split_list = body.split("(")
+        prefix = split_list[0] + "("
+        self.prefix = prefix
+
+        print(body, prefix)
+
+
 """d = CommonDatabase("nen.cmdata")
 d.commit()
 d.add("Cirilla", "PER")

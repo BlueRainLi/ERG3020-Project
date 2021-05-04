@@ -16,11 +16,13 @@ from sayhello.fact_entity_extraction import UserPredict
 
 from sayhello.commands import forge, initdb
 
+from sayhello.commonDataProcess import SingleFunction
+
 import os
 
 #
 # utils = UserPredict(debug_mode=False)
-utils = UserPredict(debug_mode=False)
+utils = UserPredict(debug_mode=True)
 
 
 #
@@ -38,16 +40,13 @@ def index():
 
     if fact_form.validate_on_submit():
         body = fact_form.body_textarea.data
+        c_type = fact_form.c_type.data
+        nl_body = body
 
         print("-------------")
         print(body)
-        print("-------------")
-
-        c_type = fact_form.c_type.data
-
-        nl_body = body
-
         print(c_type)
+        print("-------------")
 
         # Handle if user input facts
         if c_type == "Facts":
@@ -72,6 +71,9 @@ def index():
                 # seems like emotional!
                 entity = None
                 c_type = "Emotional"
+
+        if c_type == "Predicates":
+            pass
 
         message = Message(body=body, c_type=c_type, nl_body=nl_body)
         db.session.add(message)
@@ -101,9 +103,14 @@ def index():
     nen_org = ','.join(entity_dict['ORG'])
     functions = utils.funcDB.fetch()
 
+    complex_functions = []
+    for i in range(len(functions)):
+        this_func = SingleFunction(functions[i], i)
+        complex_functions.append(this_func)
+
     return render_template('index.html', fact_form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,
-                           nen_loc=nen_loc, nen_org=nen_org, functions=functions)
+                           nen_loc=nen_loc, nen_org=nen_org, functions=complex_functions)
 
 
 @app.route('/refresh', methods=["GET"])

@@ -12,9 +12,18 @@
             document.getElementById("c_type").value=c_type;
             document.getElementById("body_textarea").focus()
         }
+
         function add_spec(this_input){
             document.getElementById("body_textarea").value=document.getElementById("body_textarea").value+this_input;
             document.getElementById("body_textarea").focus()
+        }
+
+        function add_function(this_input){
+            if (document.getElementById("c_type").value=="Predicates"){
+                document.getElementById("body_textarea").value=document.getElementById("body_textarea").value+this_input;
+                document.getElementById("body_textarea").focus()
+            }
+
         }
     </script>
 </head>

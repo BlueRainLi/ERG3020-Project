@@ -37,8 +37,8 @@
                     <h5>Functions Mentioned</h5>
                     <div class="list-group">
                         {% for function in functions %}
-                            <a class="list-group-item list-group-item-action flex-column">
-                                <p class="mb-2">{{ function}}</p>
+                            <a class="list-group-item list-group-item-action flex-column" onclick="add_function('{{ function.prefix }}')">
+                                <p class="mb-2">{{ function.body }}</p>
                             </a>
                         {% endfor %}
                     </div>
@@ -69,8 +69,16 @@
                             <input type="button" name="button" value="!" class="btn btn-info" style="margin: 10px" id="add_not" onclick="add_spec('!')">
                             <input type="button" name="button" value="=>" class="btn btn-info" style="margin: 10px" id="add_entail" onclick="add_spec('=>')">
                             <input type="button" name="button" value="<=>" class="btn btn-info" style="margin: 10px" id="add_equal" onclick="add_spec('<=>')">
+                            <input type="button" name="button" value="v" class="btn btn-info" style="margin: 10px" id="add_or" onclick="add_spec('v')">
+                            <input type="button" name="button" value="^" class="btn btn-info" style="margin: 10px" id="add_and" onclick="add_spec('^')">
+
                             <input type="button" name="button" value="(" class="btn btn-info" style="margin: 10px" id="add_left" onclick="add_spec('(')">
                             <input type="button" name="button" value=")" class="btn btn-info" style="margin: 10px" id="add_right" onclick="add_spec(')')">
+                            <input type="button" name="button" value="," class="btn btn-info" style="margin: 10px" id="add_comma" onclick="add_spec(',')">
+
+                            <input type="button" name="button" value="x" class="btn btn-info" style="margin: 10px" id="add_x" onclick="add_spec('x')">
+                            <input type="button" name="button" value="y" class="btn btn-info" style="margin: 10px" id="add_y" onclick="add_spec('y')">
+                            <input type="button" name="button" value="z" class="btn btn-info" style="margin: 10px" id="add_z" onclick="add_spec('z')">
                         </div>
                         <div class="tab-pane" id="pan3">
                             工具面板内容工具面板内容
