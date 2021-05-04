@@ -19,7 +19,7 @@ def fol_nl_gene(input_fol):
         elif '^' in uni_dict[i]:
             split_result_2 = uni_dict[i].split('^')
         else:
-            atom_cl = subs
+            pass
 
 
 fol_nl_gene("aaaa=>b")

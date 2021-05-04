@@ -22,7 +22,7 @@ import os
 
 #
 # utils = UserPredict(debug_mode=False)
-utils = UserPredict(debug_mode=True)
+utils = UserPredict(debug_mode=False)
 
 
 #
@@ -43,10 +43,10 @@ def index():
         c_type = fact_form.c_type.data
         nl_body = body
 
-        print("-------------")
+        """print("-------------")
         print(body)
         print(c_type)
-        print("-------------")
+        print("-------------")"""
 
         # Handle if user input facts
         if c_type == "Facts":
@@ -64,7 +64,7 @@ def index():
                     print(query_result[3][i], query_result[4][i])
                 utils.commonDB.commit()  # Commit your comments
 
-                utils.funcDB.add(query_result[0]['verb'],query_result[4])
+                utils.funcDB.add(query_result[0]['verb'], query_result[4])
                 utils.funcDB.commit()
 
             else:
@@ -73,6 +73,9 @@ def index():
                 c_type = "Emotional"
 
         if c_type == "Predicates":
+            pass
+
+        if c_type == "Emotional":
             pass
 
         message = Message(body=body, c_type=c_type, nl_body=nl_body)

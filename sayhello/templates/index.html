@@ -61,10 +61,17 @@
                     <!-- 面板 -->
                     <div class="tab-content">
                         <div class="tab-pane active" id="pan1">You can tell us some facts (in Third Person) and pay attention to grammar.
+                            <br/>
+                            For example: If you are Tom and you suspect that Steve stole the money, you can type:
+                            <br/>
+                            Tom accuses Steve of stealing the money.
                         </div>
                         <div class="tab-pane" id="pan2">If you want to post here, you are suggested to have a good command of First Order Logic.
                             <br/>
                             Logic operators provided here may be useful.
+                            <br/>
+                            For example: steal(x) ^ accuses_of_stealing(x,y) => !lie(y)
+                            It means, if x steals the money and y accuses x of stealing, then y does not lie.
                             <br/>
                             <input type="button" name="button" value="!" class="btn btn-info" style="margin: 10px" id="add_not" onclick="add_spec('!')">
                             <input type="button" name="button" value="=>" class="btn btn-info" style="margin: 10px" id="add_entail" onclick="add_spec('=>')">
@@ -81,7 +88,8 @@
                             <input type="button" name="button" value="z" class="btn btn-info" style="margin: 10px" id="add_z" onclick="add_spec('z')">
                         </div>
                         <div class="tab-pane" id="pan3">
-                            工具面板内容工具面板内容
+                            Feel free to say something of this topic, and speeches in this area will not be plugged into inference process.
+                            <br/> For example: I hate the stealer!
                         </div>
 
                     </div>
