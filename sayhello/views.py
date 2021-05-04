@@ -6,23 +6,19 @@
     :license: MIT, see LICENSE for more details.
 """
 from flask import flash, redirect, url_for, render_template
-
 from sayhello import app, db
 from sayhello.forms import HelloForm
 from sayhello.models import Message
-
 # This is AI algorithm
 from sayhello.fact_entity_extraction import UserPredict
-
 from sayhello.commands import forge, initdb
-
 from sayhello.commonDataProcess import SingleFunction
-
+from sayhello.mln_pack.mln_utils import write_mln_files
 import os
 
 #
 # utils = UserPredict(debug_mode=False)
-utils = UserPredict(debug_mode=False)
+utils = UserPredict(debug_mode=True)
 
 
 #
@@ -110,6 +106,10 @@ def index():
     for i in range(len(functions)):
         this_func = SingleFunction(functions[i], i)
         complex_functions.append(this_func)
+
+    path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/"
+
+    # write_mln_files(facts, predicates, functions, nen_per, nen_org, nen_loc, path+'inference.db', path+'inference.mln')
 
     return render_template('index.html', fact_form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,

@@ -1,0 +1,11 @@
+steal(person)
+accuse(person,person)
+lie(person)
+
+person = {A,B,C}
+event = {person_to_person}
+party = {wuhan_cdc,wuhan_hc,
+
+1 steal(x) ^ accuse(y,x) => !lie(y)
+1 steal(x) ^ !accuse(y,x) => lie(y)
+1 lie(x) <=> !lie(y) ^ !lie(z)
