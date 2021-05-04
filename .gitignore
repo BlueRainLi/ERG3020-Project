@@ -139,3 +139,6 @@ cython_debug/
 sayhello/source/openie-model.2020.03.26.tar.gz
 sayhello/source/decomposable-attention-elmo-2020.04.09.tar.gz
 sayhello/source/ner-elmo.2021-02-12.tar.gz
+
+
+*.pyc
