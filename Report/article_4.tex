@@ -98,6 +98,29 @@ This project is a demo of social network comment section with a special algorith
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
 \section{Introduction}
+\subsection{The Properties of Markov Network and the Origin of Our Idea}
+Markov Network is an undirected graphical model for representing dependencies between random variables.
+
+A Markov network can be represented by an undirected graph $G = (V,E)$ where the nodes in $V$ represent random variables
+and edges in $E$ represent dependency relationships.
+
+Let us consider $X$, a kind of assignment of values to the variables in a Markov Network. We call $C$ the set of maximal
+cliques in the network and assign a factor $\psi_c$ to each clique $c \in C$. The probability $P(X)$ is,
+
+\begin{equation}
+    P(X=x)=\frac{1}{Z}\prod_k\phi_k(x_{(k)})
+\end{equation}
+
+We know that Markov Network can be used to represent a system, where this system is in general form, because the random
+variables in $V$ can be either numerical or categorical.
+
+If we want to represent a world in the form of Markov Network, we can consider binary case, for example, if Tom lied, we
+can assign $True$ to the random variable $lie(Tom)$. So each random variable in our desired network can only take one of
+the two binary values ${True, False}$.
+
+The world above is an assignment of values of $V$.
+
+
 
 
 
