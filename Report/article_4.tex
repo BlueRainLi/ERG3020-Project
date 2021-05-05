@@ -140,7 +140,18 @@ However, we have to mention that the First Order Logic can be used with Markov N
 
 
 \subsection{The Nature of Markov Logic Networks}
-We 
+We can view Markov Logic Network (MLN) as the template of Markov Network. MLN is underdetermined and uncertain. We need to determine the variable value. However, because the value is difficult to determine, MLN uses constrains in First Order Logic (FOL) to select those most feasible world. Worlds with more conflicts with  stronger constrains has a low probabilty of existence. So MLN meets our demand very well.
+
+
+\subsection{The Components of Markov Logic Networks}
+Before we get started, we shall first define the components of MLN. MLN consists of four parts represented in FOL:
+\begin{enumerate}[noitemsep]
+    \item \textbf{Knowledge Base} \textit{Some facts about this possible world, written in FOL. For example, "Tom accuses Bill of stealing the money" is represented as "accuse_of_stealing_money(Tom,Bill)".}
+    \item \textbf{Function Declaration} \textit{Some functions mentioned in the world, written in FOL. For example, "accuse_of_stealing(person,person)". This function has two inputs, the first argument is a person and the second argument is also a person.}
+    \item \textbf{Named Entities} \textit{Some entities that belong to some specific categories. For example, "person = \{Tom, Jerry, Bob, Nazarbayev\}".}
+    \item \textbf{Predicates (Constrains)} \textit{Some general rules without pointing out any named entities, objects in the constrians are represented as x,y,z, and some underdetermined objects. For example, "steal_the_money(x)^!accuse_of_stealing(x,y)=>lie(y)" means "If x stole the money and y does not accuse x of stealing money, y lied.".}
+\end{enumerate}
+
 
 
 \section{Knowledges used in the Project}
