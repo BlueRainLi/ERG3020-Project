@@ -21,7 +21,7 @@ from sayhello.mln_pack.run import InferenceMachine, InfResult
 #
 # utils = UserPredict(debug_mode=False)
 
-utils = UserPredict(debug_mode=False)
+utils = UserPredict(debug_mode=True)
 
 inf_res_url = os.path.dirname(app.root_path) + "/sayhello/mln_pack/result.txt"
 

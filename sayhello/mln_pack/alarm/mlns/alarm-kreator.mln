@@ -1,9 +1,0 @@
-steal(person)
-accuse(person,person)
-lie(person)
-
-person = {A,B,C}
-
-1 steal(x) ^ accuse(y,x) => !lie(y)
-1 steal(x) ^ !accuse(y,x) => lie(y)
-1 lie(x) <=> !lie(y) ^ !lie(z)

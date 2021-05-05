@@ -1,0 +1,7 @@
+accuse_of_stealing_the_money(person,person)
+
+person = {John,Steve,Tom}
+
+1 lie(x)<=>!lie(y)^!lie(z)
+1 steal(x)^!accuse_of_stealing_the_money(x,y)=>lie(y)
+1 steal(x)^accuse_of_stealing_the_money(x,y)=>!lie(y)

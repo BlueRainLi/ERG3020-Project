@@ -1,0 +1,3 @@
+steal(C):31.86
+steal(A):100.0
+steal(B):31.86
