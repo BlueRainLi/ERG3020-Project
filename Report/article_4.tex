@@ -120,6 +120,12 @@ the two binary values \textbf{\{True, False\}}.
 
 The world above is an assignment of values of $V$.
 
+We are continuously thinking about the way to infer the truth of the event. PageRank algorithm by Jimmy Page gave us the
+confidence to utilize graph theory to solve the truth of an event. We tried Pagerank Algorithm to infer the truth of an
+event by assigning the relationship \textbf{\{Entailment, Contradiction, Independence\}} between any pairs of comments on
+the social network. Then we construct a directed graph of this set of comments. Each comment will post its importance to
+the comment that it entails, and we construct
+
 
 
 \section{Knowledges used in the Project}
@@ -162,11 +168,13 @@ The NLP package used in this project is \textbf{AllenNLP} \cite{Gardner2017Allen
 \subsection{Markov Logic Networks}
 \textbf{Pracmln} is a toolbox for statistical relational learning and reasoning and as such also includes tools for standard graphical models \cite{pracmln}. We use this package to build the markov logic networks and give the results.
 \subsection{Flask}
-\textbf{Flask} is a micro web framework written in Python 
+\textbf{Flask} is a micro web framework written in Python
 \cite{grinberg2018flask}. We use \textbf{Flask} to show the demo of social network comments section. Here is a figure of the demo website:
-\begin{equation}
-    figure
-\end{equation}
+\begin{figure}[tb]
+    \centering
+    \includegraphics[width=\columnwidth]{Flask.png}
+    \caption[An Screenshot of the website]{An Screenshot of the website} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+    \end{figure}
 From the website, we can find that:
 
 \section{Introduction}
