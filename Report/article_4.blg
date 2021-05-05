@@ -6,7 +6,7 @@ Database file #1: references.bib
 Warning--empty booktitle in Gardner2017AllenNLP
 You've used 5 entries,
             1791 wiz_defined-function locations,
-            475 strings with 4401 characters,
+            475 strings with 4418 characters,
 and the built_in function-call counts, 976 in all, are:
 = -- 71
 > -- 59

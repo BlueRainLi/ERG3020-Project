@@ -6,7 +6,7 @@
 \newblock
   \url{https://en.wikipedia.org/w/index.php?title=Natural_language_processing&oldid=1020063620},
   2021.
-\newblock [Online; accessed 4-May-2021].
+\newblock [Online; accessed 5-May-2021].
 
 \bibitem{richardson2006markov}
 Matthew Richardson and Pedro Domingos.
@@ -22,7 +22,7 @@ Matt Gardner, Joel Grus, Mark Neumann, Oyvind Tafjord, Pradeep Dasigi,
 \bibitem{pracmln}
 Daniel Nyga, Mareike Picklum, Michael Beetz, et~al.
 \newblock {pracmln} -- markov logic networks in {Python}, 2013--.
-\newblock [Online].
+\newblock [Online; accessed <date>].
 
 \bibitem{grinberg2018flask}
 Miguel Grinberg.
