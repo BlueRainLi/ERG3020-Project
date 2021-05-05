@@ -1,16 +1,2 @@
-get_fucked(person)
-fuck_yesterday(person,person)
-kill_yesterday_afternoon(person,person)
-tell_that_John_'s_mother_had_died(person,person)
-kill(person,person)
-fuck(person,person)
-tell_that_he_was_fucked_yesterday(person)
-tell_that_he_wanted_to_fuck_him(person,person)
-kill_last_night(person,person)
 
-person = {Tom,Jerry,Lucas,Chris,John,Bill,Jimmy,Tim,Billy}
 
-1 fuck(x,y)=>tell_that_he_was_fucked_yesterday(x,y)
-1 Tom got fucked.
-1 !get_fucked(x)=>kill_yesterday_afternoon(x,y)
-1 =><=>^(((

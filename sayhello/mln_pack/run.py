@@ -5,10 +5,32 @@ import time
 from pracmln.utils import locs
 
 
+class InfResult:
+    def __init__(self, event, prob):
+        self.event = event
+        self.prob = prob
+        print(self.event, self.prob)
+
+
 class InferenceMachine:
-    def __init__(self, mln_path='alarm/mlns/alarm-kreator.mln', db_path='alarm/dbs/query1.db'):
+    def __init__(self, mln_path, db_path):
         self.db_path = db_path
         self.mln_path = mln_path
+
+    def engine(self, ask='steal,lie', inf_res_url=None):
+        try:
+            result = self.inference(ask)
+            print("$$$$$$$$$$$")
+            print("Inference for webpage!")
+            print(result)
+            print("$$$$$$$$$$$")
+            with open(inf_res_url, mode="w") as file:
+                for i in result.keys():
+                    file.write(str(i) + ':' + str(result[i]*100)[0:5])
+                    file.write("\n")
+        except:
+            print("Some error occurs during inference process!")
+            print("will use the last successful result...")
 
     def inference(self, inference_query='steal,lie'):
         mln = MLN(mlnfile=self.mln_path,
@@ -27,6 +49,7 @@ class InferenceMachine:
                   verbose=True,
                   multicore=False).run()
             print(result)
+            return result
 
     def learning(self):
         mln = MLN(mlnfile=self.mln_path, grammar='StandardGrammar')
@@ -58,5 +81,5 @@ class InferenceMachine:
 
 
 """a = InferenceMachine()
-a.inference()"""
+b = a.inference()"""
 

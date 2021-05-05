@@ -101,7 +101,27 @@
         </tr>
 
         <tr>
-          <td style="vertical-align: top">&nbsp;</td>
+          <td style="vertical-align: top">
+              <!-- Inference Result Module  -->
+              <h5>The Underlying Truth given by MLN</h5>
+
+              <div class="list-group">
+                    {% for double in infresult %}
+                        <a class="list-group-item list-group-item-action flex-column">
+
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-success">{{ double.prob }}%
+                                </h5>
+                            </div>
+
+                            <p class="mb-1">{{ double.event }}</p>
+                        </a>
+                    {% endfor %}
+                </div>
+
+
+
+          </td>
             <td style="vertical-align: top">&nbsp;</td>
           <td style="vertical-align: top">
               <!--Comments area -->

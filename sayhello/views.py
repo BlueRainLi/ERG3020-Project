@@ -16,16 +16,20 @@ from sayhello.commonDataProcess import SingleFunction
 from sayhello.mln_pack.mln_utils import write_mln_files
 import os
 
-from sayhello.mln_pack.run import InferenceMachine
+from sayhello.mln_pack.run import InferenceMachine, InfResult
 
 #
 # utils = UserPredict(debug_mode=False)
-machine = InferenceMachine()
 
 utils = UserPredict(debug_mode=True)
 
+inf_res_url = os.path.dirname(app.root_path) + "/sayhello/mln_pack/result.txt"
 
-#
+"""mln_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/alarm/mlns/alarm-kreator.mln"
+db_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/alarm/dbs/query1.db"
+inf_machine = InferenceMachine(db_path=db_path, mln_path=mln_path)
+
+inf_machine.engine(ask='steal', inf_res_url=inf_res_url)"""
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -113,11 +117,24 @@ def index():
 
     path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/"
 
-    # write_mln_files(facts, predicates, functions, nen_per, nen_org, nen_loc, path+'inference.db', path+'inference.mln')
+    write_mln_files(facts, predicates, functions, nen_per, nen_org, nen_loc, path+'inference.db', path+'inference.mln')
+
+    result_stc = []
+    with open(inf_res_url, mode="r") as file:
+        for line in file:
+            if "\n" in line:
+                line = line.rstrip("\n")
+                print(line)
+                double = line.split(":")
+                this = InfResult(double[0], double[1])
+                result_stc.append(this)
+
+    print(result_stc)
 
     return render_template('index.html', fact_form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,
-                           nen_loc=nen_loc, nen_org=nen_org, functions=complex_functions)
+                           nen_loc=nen_loc, nen_org=nen_org, functions=complex_functions,
+                           infresult=result_stc)
 
 
 @app.route('/refresh', methods=["GET"])
@@ -146,4 +163,12 @@ def refresh():
         file.write("")
 
     return redirect(url_for("index"))
+
+
+@app.route('/refresh_inf', methods=["GET"])
+def refresh_inf():
+    inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
+    print("%%%%")
+    print("Refreshed inference result.")
+    print("%%%%")
 
