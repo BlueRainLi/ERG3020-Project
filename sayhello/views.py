@@ -21,15 +21,17 @@ from sayhello.mln_pack.run import InferenceMachine, InfResult
 #
 # utils = UserPredict(debug_mode=False)
 
-utils = UserPredict(debug_mode=True)
+utils = UserPredict(debug_mode=False)
 
 inf_res_url = os.path.dirname(app.root_path) + "/sayhello/mln_pack/result.txt"
 
-"""mln_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/alarm/mlns/alarm-kreator.mln"
-db_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/alarm/dbs/query1.db"
+mln_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/inference.mln"
+db_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/inference.db"
+
+
 inf_machine = InferenceMachine(db_path=db_path, mln_path=mln_path)
 
-inf_machine.engine(ask='steal', inf_res_url=inf_res_url)"""
+inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -42,15 +44,13 @@ def index():
 
     fact_form = HelloForm()
 
+    change = False
+
     if fact_form.validate_on_submit():
+        change = True
         body = fact_form.body_textarea.data
         c_type = fact_form.c_type.data
         nl_body = body
-
-        """print("-------------")
-        print(body)
-        print(c_type)
-        print("-------------")"""
 
         # Handle if user input facts
         if c_type == "Facts":
@@ -87,6 +87,7 @@ def index():
         db.session.commit()
 
         flash('Published 1 comment.')
+
         return redirect(url_for('index'))
 
     messages = Message.query.order_by(Message.timestamp.desc()).all()
@@ -115,10 +116,6 @@ def index():
         this_func = SingleFunction(functions[i], i)
         complex_functions.append(this_func)
 
-    path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/"
-
-    write_mln_files(facts, predicates, functions, nen_per, nen_org, nen_loc, path+'inference.db', path+'inference.mln')
-
     result_stc = []
     with open(inf_res_url, mode="r") as file:
         for line in file:
@@ -130,6 +127,11 @@ def index():
                 result_stc.append(this)
 
     print(result_stc)
+
+    write_mln_files(facts, predicates, functions, nen_per, nen_org, nen_loc, db_path, mln_path)
+
+    if change:
+        inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
 
     return render_template('index.html', fact_form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,

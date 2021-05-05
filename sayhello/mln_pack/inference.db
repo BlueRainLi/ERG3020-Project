@@ -1,0 +1,4 @@
+accuse_of_stealing_the_money(Tom,Tom)
+accuse_of_stealing_the_money(Steve,Tom)
+!accuse_of_stealing_the_money(John,John)
+!accuse_of_stealing_the_money(John,Steve)

@@ -17,7 +17,7 @@ class InferenceMachine:
         self.db_path = db_path
         self.mln_path = mln_path
 
-    def engine(self, ask='steal,lie', inf_res_url=None):
+    def engine(self, ask='steal', inf_res_url=None):
         try:
             result = self.inference(ask)
             print("$$$$$$$$$$$")
@@ -32,7 +32,7 @@ class InferenceMachine:
             print("Some error occurs during inference process!")
             print("will use the last successful result...")
 
-    def inference(self, inference_query='steal,lie'):
+    def inference(self, inference_query='steal'):
         mln = MLN(mlnfile=self.mln_path,
                   grammar='StandardGrammar')
         db = Database(mln, dbfile=self.db_path)
