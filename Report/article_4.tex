@@ -98,6 +98,27 @@ This project is a demo of social network comment section with a special algorith
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
 \section{Introduction}
+\subsection{The Properties of Markov Network and the Origin of Our Idea}
+Markov Network is an undirected graphical model for representing dependencies between random variables.
+
+A Markov network can be represented by an undirected graph $G = (V,E)$ where the nodes in $V$ represent random variables
+and edges in $E$ represent dependency relationships.
+
+Let us consider $X$, a kind of assignment of values to the variables in a Markov Network. We call $C$ the set of maximal
+cliques in the network and assign a factor $\psi_c$ to each clique $c \in C$. The probability $P(X)$ is,
+
+\begin{equation}
+    P(X=x)=\frac{1}{Z}\prod_k\phi_k(x_{(k)})
+\end{equation}
+
+We know that Markov Network can be used to represent a system, where this system is in general form, because the random
+variables in $V$ can be either numerical or categorical.
+
+If we want to represent a world in the form of Markov Network, we can consider binary case, for example, if Tom lied, we
+can assign \textbf{True} to the random variable \textbf{lie(Tom)}. So each random variable in our desired network can only take one of
+the two binary values \textbf{\{True, False\}}.
+
+The world above is an assignment of values of $V$.
 
 
 
@@ -119,13 +140,19 @@ where $x_{(k)}$ is the state of the $k$th clique (i.e., the state of the variabl
     A Markov logic network L is a set of pairs $(F_i, w_i)$, where $F_i$ is a formula in first-order logic and $w_i$ is a real number. Together with a finite set of constants $C = {c_1,c_2,\cdots,c_{|C|}}$, it defines a Markov network $M_{L,C}$ (Equations 1 and 2) as follows:
 \end{definition}
 
-\begin{enumerate}[noitemsep] % [noitemsep] removes whitespace between the items for a compact look
+\begin{enumerate}[noitemsep]
     \item \textit{$M_{L,C}$ contains one binary node for each possible grounding of each predicate appearing in $L$. The value of the node is $1$ if the ground atom is true, and $0$ otherwise.}
     \item \textit{$M_{L,C}$ contains one feature for each possible grounding ofeach formula $F_i$ in $L$. The value ofthis feature is $1$ if the ground formula is true, and $0$ otherwise. The weight ofthe feature is the wi associated with $F_i$ in $L$.}
 \end{enumerate}
 
+All the formulas and the constants in the Markov Logic Networks have to meet the $3$ assumptions below:
 
-\clearpage
+\begin{enumerate}[noitemsep]
+    \item \textbf{Unique names.} \textit{Different constants refer to different objects.}
+    \item \textbf{Domain closure.} \textit{The only objects in the domain are those representable using the constant and function symbols in $(L,C)$}
+    \item \textbf{Known functions.} \textit{For each function appearing in $L$, the value of the function applied to every possible tuple of arguments is known, and is a element of $C$.}
+\end{enumerate}
+
 
 
 \section{Packages used in the Project}
@@ -300,5 +327,17 @@ Reference the figure composed of multiple subfigures as Figure~\vref{fig:esempio
 \clearpage
 \appendix
 \section{A guidence to running code}
-
+First we have to make sure the working director of the ternimal is the code folder. Then we type the below codes:
+\begin{lstlisting}
+    pip install -r requirements.txt
+\end{lstlisting}
+Then we can find that all the requirements are installed. The next steps are to run the flask app. 
+\begin{lstlisting}
+    $env:FLASK_APP = "sayhello"
+\end{lstlisting}
+And then
+\begin{lstlisting}
+    flask run --host 127.0.0.1 -p 80
+\end{lstlisting}
+Therefore, the flask app is run and we can see the website.
 \end{document}
