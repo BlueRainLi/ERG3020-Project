@@ -24,7 +24,8 @@ class OpenInfoPredictor:
 
 class EntailmentPredictor:
     def __init__(self):
-        # self.source_tgz = os.path.dirname(app.root_path) + "/sayhello/source/decomposable-attention-elmo-2020.04.09.tar.gz"
+        # self.source_tgz = os.path.dirname(app.root_path) +
+        # "/sayhello/source/decomposable-attention-elmo-2020.04.09.tar.gz"
         self.source_tgz = "https://storage.googleapis.com/allennlp-public-models/decomposable-attention-elmo-2020.04.09.tar.gz"
         self.predictor = Predictor.from_path(self.source_tgz)
 
@@ -210,6 +211,7 @@ class UserPredict:
                 new_list.append(a)
 
         this_atom_clauses['args'] = new_list
+        this_atom_clauses['no_false_list'] = no_false_list
 
         parameter_list = []
         for i in this_atom_clauses['args_type'].keys():
@@ -229,15 +231,33 @@ class UserPredict:
         prefix = this_atom_clauses['verb'] + '('
 
         this_atom_clauses['prefix'] = prefix
+        this_atom_clauses['function'] = atom_clause
+
+        parameter_mln = []
+        for i in no_false_list:
+            if i == "PER":
+                parameter_mln.append("person")
+            elif i == "ORG":
+                parameter_mln.append("organization")
+            elif i == "LOC":
+                parameter_mln.append("location")
+        function_mln = this_atom_clauses['verb'] + '(' + ','.join(parameter_mln) + ')'
+        this_atom_clauses['function_mln'] = function_mln
 
         print("^^^^^^^^^^^^^^^^^^^")
         print(this_atom_clauses)
         print("^^^^^^^^^^^^^^^^^^^")
 
-        # Vital important
-        # self.funcDB.add(this_atom_clauses)
+        # Commit Entities
+        for i in range(len(this_atom_clauses['args'])):
+            self.commonDB.add(this_atom_clauses['args'][i], this_atom_clauses['no_false_list'][i])
+        self.commonDB.commit()
 
-        return this_atom_clauses, atom_clause, entity_result_list, this_atom_clauses['args'], no_false_list
+        # Commit Functions
+        self.funcDB.add(this_atom_clauses)
+        self.funcDB.commit()
+
+        return atom_clause
 
     def entity_processing(self, arg):
 
@@ -342,15 +362,40 @@ class UserPredict:
         return nl
 
     def break_fact(self, data):
+        print("***************")
+        print(data)
+        sym = None
         if "and" in data:
             lst = data.split("and")
+            sym = "and"
         elif "or" in data:
             lst = data.split("or")
+            sym = "or"
         else:
             return self.query(data)
 
+        # if conjugate
+
+        nl_list = []
+
+        for i in lst:
+            nl = self.query(i)
+            nl_list.append(nl)
+
+        print("*****************")
+        print(nl_list)
+
+        if sym == "and":
+            output = " ^ ".join(nl_list)
+
+        elif sym == "or":
+            output = " v ".join(nl_list)
+        else:
+            output = False
+
+        return output
+
     def break_predicate(self, data):
-        sym = None
         if "∩" in data:
             sym = "∩"
             lst = data.split("∩")
@@ -369,20 +414,20 @@ class UserPredict:
 
         if sym == "∪":
             output = " or ".join(nl_list)
+            refine = " v ".join(lst)
 
         elif sym == "∩":
             output = " and ".join(nl_list)
+            refine = " ^ ".join(lst)
         else:
             output = False
+            refine = False
 
-        return output
+        return output, refine
 
     def break_logic(self, data):
-
         data = data.replace(' ', '')
-
-        sym = None
-        print(data)
+        # print(data)
         if "<=>" in data:
             sym = "<=>"
             lst = data.split("<=>")
@@ -390,31 +435,37 @@ class UserPredict:
             sym = "=>"
             lst = data.split("=>")
         else:
-            return False
-        print(lst)
+            return False, False
+        # print(lst)
         # if true
 
         nl_list = []
+        l_list = []
         for i in lst:
-            nl = self.break_predicate(i)
-            print(nl)
+            nl = self.break_predicate(i)[0]
+            ll = self.break_predicate(i)[1]
+            l_list.append(ll)
             nl_list.append(nl)
         print(nl_list)
 
         if False in nl_list:
-            return False
+            return False, False
 
         if sym == "<=>":
-            output = nl_list[0] + " if and only if " + nl_list[1]
+            output = nl_list[0] + " if and only if " + nl_list[1] + "."
+            refine = " <=> ".join(l_list)
 
         elif sym == "=>":
-            output = "If " + nl_list[0] + ", we will have " + nl_list[1]
+            output = "If " + nl_list[0] + ", we will have, " + nl_list[1] + "."
+            refine = " => ".join(l_list)
+
         else:
             output = False
+            refine = False
 
         print(output)
 
-        return output
+        return output, refine
 
 
 """test = UserPredict(True)

@@ -1,1 +1,3 @@
-fuck_last_night(Tom,Kevin)
+steal_the_money(Tom) v steal_the_money(Ken) v steal_the_money(Sam)
+steal_the_money(Tom)vsteal_the_money(Jim)vsteal_the_money(Sam)
+fuck(Tom,Jerry)

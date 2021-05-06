@@ -9,22 +9,20 @@ from sayhello.commands import forge, initdb
 from sayhello.commonDataProcess import SingleFunction
 from sayhello.mln_pack.mln_utils import write_mln_files
 import os
-from sayhello.mln_pack.run import InferenceMachine, InfResult
+from sayhello.mln_pack.mln_main import InferenceMachine, InfResult
 import pickle
 
-#
-# utils = UserPredict(debug_mode=False)
 
 utils = UserPredict(debug_mode=False)
 
 inf_res_url = os.path.dirname(app.root_path) + "/sayhello/mln_pack/result.txt"
-
 mln_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/inference.mln"
 db_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/inference.db"
+func_url = os.path.dirname(app.root_path) + "/sayhello/commonData/func.pkl"
+nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/nen.cmdata"
 
 
 inf_machine = InferenceMachine(db_path=db_path, mln_path=mln_path)
-
 inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
 
 
@@ -43,40 +41,32 @@ def index():
 
         # Handle if user input facts
         if c_type == "Facts":
-            query_result = utils.query(body)
+            query_result = utils.break_fact(body)
+
+            print("*************************")
+            print(query_result)
+            print("*************************")
 
             if query_result:
-                atom_clau = query_result[1]
-                # print(atom_clause)
-                body = str(atom_clau)
-                entity = str(query_result[2])
-
-                # Commit to entity database
-                for i in range(len(query_result[3])):
-                    utils.commonDB.add(query_result[3][i], query_result[4][i])
-                    print(query_result[3][i], query_result[4][i])
-                utils.commonDB.commit()  # Commit your comments
-
-                utils.funcDB.add(query_result[0])
-                utils.funcDB.commit()
-
+                body = str(query_result)
             else:
-                # seems like emotional!
-                entity = None
+                # seems like emotional
                 c_type = "Emotional"
 
         if c_type == "Predicates":
             query_result = utils.break_logic(body)
 
+            print("*************************")
             print(query_result)
-            if query_result:
-                nl_body = query_result
+            print("*************************")
+
+            if query_result[0]:
+                nl_body = query_result[0]
             else:
                 # seems like with errors!
                 c_type = "Emotional"
 
-            body = body.replace("∪", "v")
-            body = body.replace("∩", "^")
+            body = query_result[1]
 
         if c_type == "Emotional":
             pass
@@ -124,9 +114,14 @@ def index():
                 this = InfResult(double[0], double[1])
                 result_stc.append(this)
 
-    print(result_stc)
-    # BUGS!
-    # write_mln_files(facts, predicates, functions, nen_per, nen_org, nen_loc, db_path, mln_path)
+    #
+    functions_mln = []
+    for i in funcs:
+        try:
+            functions_mln.append(i['function_mln'])
+        except:
+            print("bug handled!")
+    write_mln_files(facts, predicates, functions_mln, nen_per, nen_org, nen_loc, db_path, mln_path)
 
     if change:
         inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
@@ -144,31 +139,37 @@ def refresh():
     print("Deleted comments Database")
 
     # Clear Named entity
-    nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/nen.cmdata"
-
     # Clear caches:
     utils.commonDB.comments = {'PER': [], 'LOC': [], 'ORG': []}
-    print(nen_url)
 
     with open(nen_url, mode='w') as file:
         file.write("")
 
     # Clear Functions
-    nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/func.pkl"
     # Clear caches:
     utils.funcDB.comments = []
-    print(nen_url)
 
-    with open(nen_url, mode='w') as file:
+    with open(func_url, mode='w') as file:
         file.write("")
 
+    print("Deleted named entity and functions")
     return redirect(url_for("index"))
 
 
 @app.route('/refresh_inf', methods=["GET"])
 def refresh_inf():
-    inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
+
+    answer_feedback = inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
+
     print("%%%%")
     print("Refreshed inference result.")
     print("%%%%")
+
+    if answer_feedback:
+        flash('Inference result of Markov Logic Network updated.')
+    else:
+        flash('Inference result of Markov Logic Network is not available now, because the information '
+              'is not yet enough or some errors occurred during inference. The result of last successful inference '
+              'is displayed.')
+    return redirect(url_for("index"))
 

@@ -52,6 +52,11 @@
 
               <!-- Inference Result Module  -->
               <h5>The Underlying Truth given by MLN</h5>
+              <p>
+                <form action="/refresh_inf" method="get">
+                    <button name="refresh_inf" type=submit class="btn btn-secondary">Get Truth</button>
+                </form>
+              </p>
 
               <div class="list-group">
                     {% for double in infresult %}
@@ -172,7 +177,7 @@
                     {% for emotional in emotionals %}
                         <a class="list-group-item list-group-item-action flex-column">
                             <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1 text-success">{{ emotional.c_type}}
+                                <h5 class="mb-1 text-success">{{ emotional.c_type }}
                                    <!-- <small class="text-muted"> #{{ loop.revindex }}</small> -->
                                 </h5>
                                 <!--<small data-toggle="tooltip" data-placement="top"

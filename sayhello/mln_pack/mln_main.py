@@ -28,11 +28,13 @@ class InferenceMachine:
                 for i in result.keys():
                     file.write(str(i) + ':' + str(result[i]*100)[0:5])
                     file.write("\n")
+            return True
         except:
             print("Some error occurs during inference process!")
             print("will use the last successful result...")
+            return False
 
-    def inference(self, inference_query='steal'):
+    def inference(self, inference_query):
         mln = MLN(mlnfile=self.mln_path,
                   grammar='StandardGrammar')
         db = Database(mln, dbfile=self.db_path)
