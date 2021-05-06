@@ -1,27 +1,21 @@
 # -*- coding: utf-8 -*-
-"""
-    :author: Grey Li (李辉)
-    :url: http://greyli.com
-    :copyright: © 2018 Grey Li <withlihui@gmail.com>
-    :license: MIT, see LICENSE for more details.
-"""
+
 from flask import flash, redirect, url_for, render_template
 from sayhello import app, db
 from sayhello.forms import HelloForm
 from sayhello.models import Message
-# This is AI algorithm
 from sayhello.fact_entity_extraction import UserPredict
 from sayhello.commands import forge, initdb
 from sayhello.commonDataProcess import SingleFunction
 from sayhello.mln_pack.mln_utils import write_mln_files
 import os
-
 from sayhello.mln_pack.run import InferenceMachine, InfResult
+import pickle
 
 #
 # utils = UserPredict(debug_mode=False)
 
-utils = UserPredict(debug_mode=True)
+utils = UserPredict(debug_mode=False)
 
 inf_res_url = os.path.dirname(app.root_path) + "/sayhello/mln_pack/result.txt"
 
@@ -36,11 +30,6 @@ inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-
-    """    type_form = HelloForm()
-
-    if type_form.submit():
-        print("Query Caught!")"""
 
     fact_form = HelloForm()
 
@@ -68,7 +57,7 @@ def index():
                     print(query_result[3][i], query_result[4][i])
                 utils.commonDB.commit()  # Commit your comments
 
-                utils.funcDB.add(query_result[0]['verb'], query_result[4])
+                utils.funcDB.add(query_result[0])
                 utils.funcDB.commit()
 
             else:
@@ -77,7 +66,13 @@ def index():
                 c_type = "Emotional"
 
         if c_type == "Predicates":
-            pass
+            query_result = utils.predicate_query(body)
+
+            if query_result:
+                nl_body = query_result
+            else:
+                # seems like with errors!
+                c_type = "Emotional"
 
         if c_type == "Emotional":
             pass
@@ -91,8 +86,6 @@ def index():
         return redirect(url_for('index'))
 
     messages = Message.query.order_by(Message.timestamp.desc()).all()
-
-    # print(messages)
 
     facts = []
     predicates = []
@@ -109,12 +102,13 @@ def index():
     nen_per = ','.join(entity_dict['PER'])
     nen_loc = ','.join(entity_dict['LOC'])
     nen_org = ','.join(entity_dict['ORG'])
-    functions = utils.funcDB.fetch()
+
+    funcs = utils.funcDB.fetch()
 
     complex_functions = []
-    for i in range(len(functions)):
-        this_func = SingleFunction(functions[i], i)
-        complex_functions.append(this_func)
+    for i in funcs:
+        this = SingleFunction(i)
+        complex_functions.append(this)
 
     result_stc = []
     with open(inf_res_url, mode="r") as file:
@@ -127,8 +121,8 @@ def index():
                 result_stc.append(this)
 
     print(result_stc)
-
-    write_mln_files(facts, predicates, functions, nen_per, nen_org, nen_loc, db_path, mln_path)
+    # BUGS!
+    # write_mln_files(facts, predicates, functions, nen_per, nen_org, nen_loc, db_path, mln_path)
 
     if change:
         inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
@@ -156,7 +150,7 @@ def refresh():
         file.write("")
 
     # Clear Functions
-    nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/func.cmdata"
+    nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/func.pkl"
     # Clear caches:
     utils.funcDB.comments = []
     print(nen_url)

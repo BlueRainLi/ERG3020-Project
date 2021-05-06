@@ -4,6 +4,8 @@ import sys
 from sayhello import app
 from nltk.stem.wordnet import WordNetLemmatizer
 from sayhello.commonDataProcess import CommonDatabase, CommonFunction
+import re
+import copy
 
 
 class OpenInfoPredictor:
@@ -52,7 +54,7 @@ class UserPredict:
             self.nameEntityEngine = NameEntityPredictor()
 
         self.commonDB = CommonDatabase("nen.cmdata")
-        self.funcDB = CommonFunction("func.cmdata")
+        self.funcDB = CommonFunction("func.pkl")
 
         self.verb_database = []
         self.entity_database_per = []
@@ -61,7 +63,7 @@ class UserPredict:
 
     def query(self, comment):
         result_dict = self.openInfoEngine.query(comment)
-        print(result_dict)
+        # print(result_dict)
 
         # Determine the principal verb
         tags_0 = []
@@ -85,9 +87,10 @@ class UserPredict:
         # We want the minimal number of tag O
         index_desire = tags_0.index(min(tags_0))
         best_verb_dict = result_dict["verbs"][index_desire]
-        print("*********************")
+
+        """print("*********************")
         print(best_verb_dict)
-        print("*********************")
+        print("*********************")"""
 
         # Principal determined!
 
@@ -116,23 +119,8 @@ class UserPredict:
         # Convert the verb into standard form.
         verb_standard = WordNetLemmatizer().lemmatize(best_verb_dict['verb'], 'v')
 
-        this_atom_clauses = {'verb': verb_standard, 'neg': False, 'args': None}
-
-        """        arg_list = []
-        for i in string_list:
-            if 'NEG' in i:
-                this_atom_clauses['neg'] = True
-            elif 'ARG' in i:
-                obj = i.split(': ')[1]
-                arg_list.append(obj)
-        # print(arg_list)
-        # Process the args:
-        this_atom_clauses['args'] = arg_list
-        # print(this_atom_clauses)"""
-
-        # ...
-
-        this_atom_clauses = {'verb': verb_standard, 'neg': False, 'args': None, 'grammar': None}
+        this_atom_clauses = {'verb': verb_standard, 'neg': False, 'args': None, 'grammar': None,
+                             'pure_verb': str(verb_standard)}
 
         arg_list = {}
         orders = []
@@ -148,17 +136,14 @@ class UserPredict:
             elif 'V' in i:
                 obj = i.split(': ')[1]
                 orders.append('V')
-        print(arg_list)
-        print(orders)
+        # print(arg_list)
+        # print(orders)
 
         # arg_list = {'ARG0': 'Jerry', 'ARG2': 'Tom', 'ARG1': 'that he wanted to fuck him'}
 
         this_atom_clauses['args'] = arg_list
         this_atom_clauses['grammar'] = orders
-
-        print(this_atom_clauses)
-
-        # ...
+        grammar_type_dict = {}
 
         final_result = False
         entity_result_list = []
@@ -169,24 +154,49 @@ class UserPredict:
             entity_result_list.append(result)
             # print(result)
             if result:
+                grammar_type_dict[i] = result
                 final_result = True
+            else:
+                grammar_type_dict[i] = False
+
+        this_atom_clauses['args_type'] = grammar_type_dict
+
+        natural_string = ''
+        for i in this_atom_clauses['grammar']:
+            if 'ARG' in i:
+                refer = this_atom_clauses['args_type'][i]
+                if refer == "PER":
+                    give = '[ a person ]'
+                elif refer == "ORG":
+                    give = '[ an organization ]'
+                elif refer == "LOC":
+                    give = '[ a location ]'
+                elif not refer:
+                    give = this_atom_clauses['args'][i]
+            elif i == "V":
+                give = this_atom_clauses['pure_verb']
+            elif i == "NEG":
+                give = ""
+            else:
+                give = ""
+                print('Nothing')
+            natural_string = natural_string + " " + give
+
+        # print(natural_string)
+        this_atom_clauses['natural_string'] = natural_string
+        this_atom_clauses['args_backup'] = this_atom_clauses['args'].copy()
 
         if not final_result:
             print('This may not be a fact')
             return False
 
-        this_atom_clauses_dict = this_atom_clauses
-
-        # Add suffix
+        # suffix
         for i in range(len(arg_list)):
             # print(arg_list)
             if not entity_result_list[i]:
                 args_split = arg_list[list(arg_list.keys())[i]].split(' ')
-                # print(args_split)
-                # print(this_atom_clauses_dict['verb'])
-                this_list = [this_atom_clauses_dict['verb']] + args_split
-                # print(this_list)
-                this_atom_clauses_dict['verb'] = '_'.join(this_list)
+                this_list = [this_atom_clauses['verb']] + args_split
+                this_atom_clauses['verb'] = '_'.join(this_list)
                 # print(this_atom_clauses_dict['verb'])
 
         # Remove the False arguments
@@ -201,13 +211,33 @@ class UserPredict:
 
         this_atom_clauses['args'] = new_list
 
-        atom_clause = ''
-        if this_atom_clauses_dict['neg']:
-            atom_clause += '!'
-        atom_clause = atom_clause + this_atom_clauses_dict['verb'] + '(' + ','.join(this_atom_clauses_dict['args']) + ')'
-        print(this_atom_clauses_dict)
+        parameter_list = []
+        for i in this_atom_clauses['args_type'].keys():
+            if this_atom_clauses['args_type'][i]:
+                parameter_list.append(i)
 
-        return this_atom_clauses_dict, atom_clause, entity_result_list, this_atom_clauses['args'], no_false_list
+        this_atom_clauses['usr_parameter_list'] = parameter_list
+
+        atom_clause = ''
+        if this_atom_clauses['neg']:
+            atom_clause += '!'
+        atom_clause = atom_clause + this_atom_clauses['verb'] + '(' + ','.join(this_atom_clauses['args']) + ')'
+
+        new_usr_parameter_list = []
+        for i in this_atom_clauses['usr_parameter_list']:
+            new_usr_parameter_list.append(i+'=')
+        prefix = this_atom_clauses['verb'] + '('
+
+        this_atom_clauses['prefix'] = prefix
+
+        print("^^^^^^^^^^^^^^^^^^^")
+        print(this_atom_clauses)
+        print("^^^^^^^^^^^^^^^^^^^")
+
+        # Vital important
+        # self.funcDB.add(this_atom_clauses)
+
+        return this_atom_clauses, atom_clause, entity_result_list, this_atom_clauses['args'], no_false_list
 
     def entity_processing(self, arg):
 
@@ -229,23 +259,128 @@ class UserPredict:
                 result_org = False
                 break
         if result_org:
-            self.entity_database_per.append(arg)
+            self.entity_database_org.append(arg)
             return 'ORG'
         for i in tag_result:
             if 'LOC' not in i:
                 result_loc = False
                 break
         if result_loc:
-            self.entity_database_per.append(arg)
+            self.entity_database_loc.append(arg)
             return 'LOC'
         return False
 
-    def breakdown(self, comment):
-        if "or" in comment:
-            pass
+    def atom_clause_covert(sent_list: list, verb: str, atom: str):
+        r1 = re.compile(r"(.+)\((.+)\)")
+        r2 = re.compile(r"(ARG[0-9]+)\:(.+)")
+        r3 = re.compile(r"(ARG[0-9]+)=(.+)")
+        lst = r1.match(atom).groups()[1].split(",")
+        for index, item in enumerate(lst):
+            lst[index] = item.replace(" ", "")
+        dis = dict()
+        for item in lst:
+            res = r3.match(item).groups()
+            dis[res[0]] = res[1]
 
+        for i, val in enumerate(sent_list):
+            if val == "V":
+                sent_list[i] = verb
+            if "ARG" in val:
+                res = r2.match(val).groups()
+                if res[1] != "PER":
+                    sent_list[i] = res[1]
+                else:
+                    sent_list[i] = dis[res[0]]
+
+        return " ".join(sent_list)
+
+    def predicate_query(self, data):
+        print("-----------------")
+        print(data)
+        print("-----------------")
+
+        neg = False
+        if data[0] == "!":
+            neg = True
+            data = data.lstrip("!")
+
+        result = None
+        for i in self.funcDB.fetch():
+            if i['verb'] == data.split('(')[0]:
+                result = i
+                break
+
+        if result:
+            return self.atom_logic_to_nl(result, data, neg)
         else:
-            pass
+            print("no corresponding result...")
+            return False
+
+    def atom_logic_to_nl(self, result, data, neg):
+        stack = False
+        desired = ''
+        for i in data:
+            if i == ')':
+                stack = False
+            if stack:
+                desired += i
+            if i == '(':
+                stack = True
+
+        # print(result)
+
+        usr_para = result['usr_parameter_list']
+        args_type = result['args_type']
+        grammar = result['grammar']
+        args = result['args_backup']
+        des_list = desired.split(',')
+
+        print('des_list', des_list)
+        print('usr_para=', usr_para)
+        print('args_type=', args_type)
+        print('args=', args)
+
+        for i in range(len(usr_para)):
+            arg_name = usr_para[i]
+            args_type[arg_name] = des_list[i]
+
+        print(args_type)
+
+        nl = ""
+
+        for i in grammar:
+            if i == "V":
+                give = result['pure_verb']
+                if neg:
+                    give = "not" + " " + give
+            elif "ARG" in i:
+                if args_type[i]:
+                    give = args_type[i]
+                else:
+                    give = args[i]
+            nl = nl + " " + give
+
+        print("$$$$$$$")
+        print(nl)
+        print("$$$$$$$")
+
+        return nl
+
+    def break_fact(self, data):
+        if "and" in data:
+            lst = data.split("and")
+        elif "or" in data:
+            lst = data.split("or")
+        else:
+            return self.query(data)
+
+    def break_predicate(self, data):
+        if "∩" in data:
+            lst = data.split("∩")
+        elif "∪" in data:
+            lst = data.split("∪")
+        else:
+            return self.query(data)
 
 
 """test = UserPredict(True)

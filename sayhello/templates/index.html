@@ -38,15 +38,41 @@
                     <div class="list-group">
                         {% for function in functions %}
                             <a class="list-group-item list-group-item-action flex-column" onclick="add_function('{{ function.prefix }}')">
-                                <p class="mb-2">{{ function.body }}</p>
+                                <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-success">{{ function.title }}
+                                </h5>
+                            </div>
+                                <p class="mb-2" style="color: #999999; font-size: 12px">{{ function.body }}</p>
                             </a>
                         {% endfor %}
                     </div>
                     <p></p>
               <!-- information extraction module ended -->
 
+
+              <!-- Inference Result Module  -->
+              <h5>The Underlying Truth given by MLN</h5>
+
+              <div class="list-group">
+                    {% for double in infresult %}
+                        <a class="list-group-item list-group-item-action flex-column">
+
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-success">{{ double.prob }}%
+                                </h5>
+                            </div>
+
+                            <p class="mb-1">{{ double.event }}</p>
+                        </a>
+                    {% endfor %}
+                </div>
+
+
           </td>
+
+
             <td width="4%" style="vertical-align: top">&nbsp;</td>
+
 
           <td width="58%" style="vertical-align: top">
               <!-- Input Area -->
@@ -76,16 +102,17 @@
                             <input type="button" name="button" value="!" class="btn btn-info" style="margin: 10px" id="add_not" onclick="add_spec('!')">
                             <input type="button" name="button" value="=>" class="btn btn-info" style="margin: 10px" id="add_entail" onclick="add_spec('=>')">
                             <input type="button" name="button" value="<=>" class="btn btn-info" style="margin: 10px" id="add_equal" onclick="add_spec('<=>')">
-                            <input type="button" name="button" value="v" class="btn btn-info" style="margin: 10px" id="add_or" onclick="add_spec('v')">
-                            <input type="button" name="button" value="^" class="btn btn-info" style="margin: 10px" id="add_and" onclick="add_spec('^')">
+                            <input type="button" name="button" value="∪" class="btn btn-info" style="margin: 10px" id="add_or" onclick="add_spec('∪')">
+                            <input type="button" name="button" value="∩" class="btn btn-info" style="margin: 10px" id="add_and" onclick="add_spec('∩')">
 
                             <input type="button" name="button" value="(" class="btn btn-info" style="margin: 10px" id="add_left" onclick="add_spec('(')">
                             <input type="button" name="button" value=")" class="btn btn-info" style="margin: 10px" id="add_right" onclick="add_spec(')')">
                             <input type="button" name="button" value="," class="btn btn-info" style="margin: 10px" id="add_comma" onclick="add_spec(',')">
-
+                            <!--
                             <input type="button" name="button" value="x" class="btn btn-info" style="margin: 10px" id="add_x" onclick="add_spec('x')">
                             <input type="button" name="button" value="y" class="btn btn-info" style="margin: 10px" id="add_y" onclick="add_spec('y')">
                             <input type="button" name="button" value="z" class="btn btn-info" style="margin: 10px" id="add_z" onclick="add_spec('z')">
+                            -->
                         </div>
                         <div class="tab-pane" id="pan3">
                             Feel free to say something of this topic, and speeches in this area will not be plugged into inference process.
@@ -96,56 +123,26 @@
                   </div>
               {{ render_form(fact_form, action=request.full_path) }}
 
+              <p></p>
 
-          </td>
-        </tr>
-
-        <tr>
-          <td style="vertical-align: top">
-              <!-- Inference Result Module  -->
-              <h5>The Underlying Truth given by MLN</h5>
-
-              <div class="list-group">
-                    {% for double in infresult %}
-                        <a class="list-group-item list-group-item-action flex-column">
-
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1 text-success">{{ double.prob }}%
-                                </h5>
-                            </div>
-
-                            <p class="mb-1">{{ double.event }}</p>
-                        </a>
-                    {% endfor %}
-                </div>
-
-
-
-          </td>
-            <td style="vertical-align: top">&nbsp;</td>
-          <td style="vertical-align: top">
               <!--Comments area -->
+
               <!-- This is Predicates Rank 1 -->
                 <h5>{{ predicates|length }} Predicates</h5>
                 <div class="list-group">
                     {% for predicate in predicates %}
                         <a class="list-group-item list-group-item-action flex-column">
                             <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1 text-success">{{ predicate.c_type}}
+                                <h5 class="mb-1 text-success"> {{ predicate.nl_body }}
                                    <!-- <small class="text-muted"> #{{ loop.revindex }}</small> -->
                                 </h5>
-                                <small data-toggle="tooltip" data-placement="top"
-                                       data-timestamp="{{ predicate.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
-                                       data-delay="500">
-                                    {{ moment(predicate.timestamp).fromNow(refresh=True) }}
-                                </small>
                             </div>
-                            <p class="mb-1">{{ predicate.body }}</p>
-                            <p class="mb-2">{{ predicate.nl_body }}</p>
+                            <p class="mb-1" style="color: #999999; font-size: 12px">{{ predicate.body }}</p>
                         </a>
                     {% endfor %}
                 </div>
                 <p></p>
+
                 <!-- Facts will be displayed at 2 -->
 
                 <h5>{{ facts|length }} Facts</h5>
@@ -164,7 +161,7 @@
                                 </small>
                                 -->
                             </div>
-                            <p class="mb-1">{{ fact.body }}</p>
+                            <p class="mb-1" style="color: #999999; font-size: 12px">{{ fact.body }}</p>
                         </a>
                     {% endfor %}
                 </div>
@@ -178,11 +175,11 @@
                                 <h5 class="mb-1 text-success">{{ emotional.c_type}}
                                    <!-- <small class="text-muted"> #{{ loop.revindex }}</small> -->
                                 </h5>
-                                <small data-toggle="tooltip" data-placement="top"
+                                <!--<small data-toggle="tooltip" data-placement="top"
                                        data-timestamp="{{ emotional.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
                                        data-delay="500">
                                     {{ moment(emotional.timestamp).fromNow(refresh=True) }}
-                                </small>
+                                </small>-->
                             </div>
                             <!--
                             <p class="mb-1">{{ emotional.entity }}</p>
@@ -191,6 +188,15 @@
                         </a>
                     {% endfor %}
                 </div>
+
+          </td>
+        </tr>
+
+        <tr>
+          <td style="vertical-align: top"></td>
+            <td style="vertical-align: top"></td>
+          <td style="vertical-align: top">
+
 
           </td>
         </tr>
