@@ -66,13 +66,17 @@ def index():
                 c_type = "Emotional"
 
         if c_type == "Predicates":
-            query_result = utils.predicate_query(body)
+            query_result = utils.break_logic(body)
 
+            print(query_result)
             if query_result:
                 nl_body = query_result
             else:
                 # seems like with errors!
                 c_type = "Emotional"
+
+            body = body.replace("∪", "v")
+            body = body.replace("∩", "^")
 
         if c_type == "Emotional":
             pass

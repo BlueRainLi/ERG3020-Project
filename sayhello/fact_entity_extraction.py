@@ -270,30 +270,6 @@ class UserPredict:
             return 'LOC'
         return False
 
-    def atom_clause_covert(sent_list: list, verb: str, atom: str):
-        r1 = re.compile(r"(.+)\((.+)\)")
-        r2 = re.compile(r"(ARG[0-9]+)\:(.+)")
-        r3 = re.compile(r"(ARG[0-9]+)=(.+)")
-        lst = r1.match(atom).groups()[1].split(",")
-        for index, item in enumerate(lst):
-            lst[index] = item.replace(" ", "")
-        dis = dict()
-        for item in lst:
-            res = r3.match(item).groups()
-            dis[res[0]] = res[1]
-
-        for i, val in enumerate(sent_list):
-            if val == "V":
-                sent_list[i] = verb
-            if "ARG" in val:
-                res = r2.match(val).groups()
-                if res[1] != "PER":
-                    sent_list[i] = res[1]
-                else:
-                    sent_list[i] = dis[res[0]]
-
-        return " ".join(sent_list)
-
     def predicate_query(self, data):
         print("-----------------")
         print(data)
@@ -316,7 +292,8 @@ class UserPredict:
             print("no corresponding result...")
             return False
 
-    def atom_logic_to_nl(self, result, data, neg):
+    @staticmethod
+    def atom_logic_to_nl(result, data, neg):
         stack = False
         desired = ''
         for i in data:
@@ -335,16 +312,16 @@ class UserPredict:
         args = result['args_backup']
         des_list = desired.split(',')
 
-        print('des_list', des_list)
-        print('usr_para=', usr_para)
-        print('args_type=', args_type)
-        print('args=', args)
+        # print('des_list', des_list)
+        # print('usr_para=', usr_para)
+        # print('args_type=', args_type)
+        # print('args=', args)
 
         for i in range(len(usr_para)):
             arg_name = usr_para[i]
             args_type[arg_name] = des_list[i]
 
-        print(args_type)
+        # print(args_type)
 
         nl = ""
 
@@ -360,9 +337,7 @@ class UserPredict:
                     give = args[i]
             nl = nl + " " + give
 
-        print("$$$$$$$")
-        print(nl)
-        print("$$$$$$$")
+        print("$$$$$$$ "+nl+" $$$$$$$")
 
         return nl
 
@@ -375,12 +350,71 @@ class UserPredict:
             return self.query(data)
 
     def break_predicate(self, data):
+        sym = None
         if "∩" in data:
+            sym = "∩"
             lst = data.split("∩")
         elif "∪" in data:
+            sym = "∪"
             lst = data.split("∪")
         else:
-            return self.query(data)
+            return self.predicate_query(data)
+
+        # if conjugate
+
+        nl_list = []
+        for i in lst:
+            nl = self.predicate_query(i)
+            nl_list.append(nl)
+
+        if sym == "∪":
+            output = " or ".join(nl_list)
+
+        elif sym == "∩":
+            output = " and ".join(nl_list)
+        else:
+            output = False
+
+        return output
+
+    def break_logic(self, data):
+
+        data = data.replace(' ', '')
+
+        sym = None
+        print(data)
+        if "<=>" in data:
+            sym = "<=>"
+            lst = data.split("<=>")
+        elif "=>" in data:
+            sym = "=>"
+            lst = data.split("=>")
+        else:
+            return False
+        print(lst)
+        # if true
+
+        nl_list = []
+        for i in lst:
+            nl = self.break_predicate(i)
+            print(nl)
+            nl_list.append(nl)
+        print(nl_list)
+
+        if False in nl_list:
+            return False
+
+        if sym == "<=>":
+            output = nl_list[0] + " if and only if " + nl_list[1]
+
+        elif sym == "=>":
+            output = "If " + nl_list[0] + ", we will have " + nl_list[1]
+        else:
+            output = False
+
+        print(output)
+
+        return output
 
 
 """test = UserPredict(True)
