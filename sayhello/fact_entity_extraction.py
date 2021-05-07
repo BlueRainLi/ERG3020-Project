@@ -403,7 +403,7 @@ class UserPredict:
             sym = "∪"
             lst = data.split("∪")
         else:
-            return self.predicate_query(data)
+            return self.predicate_query(data), data
 
         # if conjugate
 
@@ -442,8 +442,9 @@ class UserPredict:
         nl_list = []
         l_list = []
         for i in lst:
-            nl = self.break_predicate(i)[0]
-            ll = self.break_predicate(i)[1]
+            res = self.break_predicate(i)
+            nl = res[0]
+            ll = res[1]
             l_list.append(ll)
             nl_list.append(nl)
         print(nl_list)

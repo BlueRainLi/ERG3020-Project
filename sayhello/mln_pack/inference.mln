@@ -1,10 +1,8 @@
-fuck(person,person)
+accuse_of_stealing(person,person)
+lie(person)
 steal_the_money(person)
 
-person = {Tom,Jerry,Jim,Sam,Ken}
+person = {Albert,Bill,Cathy}
 
-1  x fuck y ^  y fuck z <=> z
-1  x fuck y and  x steal the money <=>  
-1  x steal the money and  z steal the money =>  
-1  x fuck y and  y fuck z =>  
-1 fuck(x,y)^steal_the_money(x)=>fuck(y,x)
+1 steal_the_money(x) ^ !accuse_of_stealing(y,x) => lie(y)
+1 steal_the_money(x) ^ accuse_of_stealing(x,y) => !lie(y)
