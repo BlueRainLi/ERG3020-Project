@@ -57,7 +57,10 @@ class InferenceMachine:
                            verbose=True,
                            multicore=False).run()
             print(result)
+        if result:
             return result
+        else:
+            return []
 
     def learning(self):
         mln = MLN(mlnfile=self.mln_path, grammar='StandardGrammar')

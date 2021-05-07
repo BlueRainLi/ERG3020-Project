@@ -1,4 +1,4 @@
-accuse_of_stealing_the_money(Albert,Albert)
-accuse_of_stealing_the_money(Bob,Albert)
-!accuse_of_stealing_the_money(David,David)
-!accuse_of_stealing_the_money(David,Bob)
+!accuse_of_stealing(David,David)
+!accuse_of_stealing(David,Bob)
+accuse_of_stealing(Bob,Albert)
+accuse_of_stealing(Albert,Albert)
