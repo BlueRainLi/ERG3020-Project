@@ -240,16 +240,26 @@ class UserPredict:
         print(this_atom_clauses)
         print("^^^^^^^^^^^^^^^^^^^")
 
-        # Commit Entities
-        for i in range(len(this_atom_clauses['args'])):
-            self.commonDB.add(this_atom_clauses['args'][i], this_atom_clauses['no_false_list'][i])
-        self.commonDB.commit()
+        # Reserved Entities!
+        per_reserved = 'Tom' in this_atom_clauses['args']
+        loc_reserved = 'Beijing' in this_atom_clauses['args']
+        org_reserved = 'CDC' in this_atom_clauses['args']
 
-        # Commit Functions
-        self.funcDB.add(this_atom_clauses)
-        self.funcDB.commit()
+        if per_reserved or loc_reserved or org_reserved:
+            # Not commit Entities Tom, Beijing, CDC
+            # Only Commit Functions
+            self.funcDB.add(this_atom_clauses)
+            self.funcDB.commit()
+            return
+        else:
+            for i in range(len(this_atom_clauses['args'])):
+                self.commonDB.add(this_atom_clauses['args'][i], this_atom_clauses['no_false_list'][i])
+            self.commonDB.commit()
 
-        return atom_clause
+            # Commit Functions
+            self.funcDB.add(this_atom_clauses)
+            self.funcDB.commit()
+            return atom_clause
 
     def entity_processing(self, arg):
 

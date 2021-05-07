@@ -18,8 +18,8 @@ db_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/inference.db"
 func_url = os.path.dirname(app.root_path) + "/sayhello/commonData/func.pkl"
 nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/nen.cmdata"
 
-utils = UserPredict(nen_url=nen_url, func_url=func_url, debug_mode=True)
-inf_machine = InferenceMachine(db_path=db_path, mln_path=mln_path, inf_res_url=inf_res_url)
+utils = UserPredict(nen_url=nen_url, func_url=func_url, debug_mode=False)
+inf_machine = InferenceMachine(db_path=db_path, mln_path=mln_path)
 functions_query = []
 answer_feedback = []
 
@@ -45,7 +45,8 @@ def index():
                 body = str(query_result)
             else:
                 # seems like emotional
-                c_type = "Emotional"
+                flash('Your comment may not be a fact, therefore it will not be accepted. Please try again.')
+                return redirect(url_for('index'))
 
         if c_type == "Predicates":
             query_result = utils.break_logic(body)
@@ -110,7 +111,20 @@ def index():
     print("===============")
 
     # Write MLN KB files
-    write_mln_files(facts, predicates, functions_mln, nen_per, nen_org, nen_loc, db_path, mln_path)
+    try:
+        write_mln_files(facts, predicates, functions_mln, nen_per, nen_org, nen_loc, db_path, mln_path)
+        print("Finished WRITING!")
+    except:
+        print("Write MLN db and mln failed...")
+
+    if answer_feedback:
+        for i in answer_feedback:
+            try:
+                nl_result = utils.predicate_query(i.event)
+                print("RESULT COMPILED!", nl_result)
+                i.event = nl_result
+            except:
+                pass
 
     return render_template('index.html', fact_form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,
@@ -119,6 +133,8 @@ def index():
 
 @app.route('/refresh', methods=["GET"])
 def refresh():
+    global answer_feedback
+    answer_feedback = []
     db.drop_all()
     db.create_all()
     print("Deleted comments Database")
@@ -137,7 +153,14 @@ def refresh():
     with open(func_url, mode='w') as file:
         file.write("")
 
-    print("Deleted named entity and functions")
+    print("Deleted named entity and functions!")
+
+    # Delete inference result
+    with open(inf_res_url, mode='w') as file:
+        file.write("")
+
+    print("Inference Result deleted!")
+
     return redirect(url_for("index"))
 
 

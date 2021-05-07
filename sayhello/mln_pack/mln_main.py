@@ -14,10 +14,9 @@ class InfResult:
 
 
 class InferenceMachine:
-    def __init__(self, mln_path, db_path, inf_res_url):
+    def __init__(self, mln_path, db_path):
         self.db_path = db_path
         self.mln_path = mln_path
-        self.inf_res_url = inf_res_url
         self.result = None
 
     def engine(self, ask):
@@ -33,18 +32,13 @@ class InferenceMachine:
                 this_obj = InfResult(i, prob_num)
                 mln_result_list.append(this_obj)
             print(mln_result_list)
-
-            pickle_file = open(self.inf_res_url, "wb")
-
-            pickle.dump(mln_result_list, pickle_file)
-
-            print("finished!")
+            print("INFERENCE Finished!")
             return mln_result_list
 
         except:
             print("Some error occurs during inference process!")
             print("--will use the last successful result...")
-            return False
+            return []
 
     def inference(self, inference_query):
         mln = MLN(mlnfile=self.mln_path,
@@ -54,14 +48,14 @@ class InferenceMachine:
                        # 'MC-SAT',
                        # 'WCSPInference',
                        # 'GibbsSampler'
-                        ]:
+                       ]:
             print('=== INFERENCE TEST:', method, '===')
             result = query(queries=inference_query,
-                  method=method,
-                  mln=mln,
-                  db=db,
-                  verbose=True,
-                  multicore=False).run()
+                           method=method,
+                           mln=mln,
+                           db=db,
+                           verbose=True,
+                           multicore=False).run()
             print(result)
             return result
 
@@ -76,24 +70,6 @@ class InferenceMachine:
                   verbose=True,
                   multicore=False).run()
 
-    def run_all(self):
-        start = time.time()
-        try:
-            self.inference()
-        except:
-            print("BUG KILLED")
-        # test_inference_taxonomies()
 
-        try:
-            print("Learning..")
-            # self.learning()
-        except:
-            print("BUG KILLED")
-
-        print()
-        print('all test finished after', time.time() - start, 'secs')
-
-
-"""a = InferenceMachine()
-b = a.inference()"""
-
+"""a = InferenceMachine("inference.mln", "inference.db")
+b = a.inference('steal,lie')"""

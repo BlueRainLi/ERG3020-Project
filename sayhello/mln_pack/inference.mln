@@ -1,12 +1,9 @@
 lie(person)
 steal_the_money(person)
-accuse_of_stealing(person,person)
+accuse_of_stealing_the_money(person,person)
 
-person = {Tim,Bob,Tom}
+person = {David,Bob,Albert}
 
-1 !lie(x) ^ !steal_the_money(y) => accuse_of_stealing(x,y)
-1 lie(x) ^ !steal_the_money(y) => !accuse_of_stealing(y,x)
-1 !lie(x) => steal_the_money(x)
-1 !lie(x) ^ accuse_of_stealing(x,y) => steal_the_money(y)
-1 steal_the_money(x) ^ lie(x) <=> accuse_of_stealing(x,y)
-1 accuse_of_stealing(x,y) => lie(y)
+1 steal_the_money(x) ^ accuse_of_stealing_the_money(y,x) => !lie(y)
+1 steal_the_money(x) ^ !accuse_of_stealing_the_money(y,x) => lie(y)
+1 lie(x) <=> !lie(y) ^ !lie(z)
