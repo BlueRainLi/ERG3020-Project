@@ -47,15 +47,15 @@ class NameEntityPredictor:
 
 
 class UserPredict:
-    def __init__(self, debug_mode=False):
+    def __init__(self, nen_url, func_url, debug_mode=False):
         if not debug_mode:
 
             self.openInfoEngine = OpenInfoPredictor()
             # self.entailEngine = EntailmentPredictor()
             self.nameEntityEngine = NameEntityPredictor()
 
-        self.commonDB = CommonDatabase("nen.cmdata")
-        self.funcDB = CommonFunction("func.pkl")
+        self.commonDB = CommonDatabase(nen_url)
+        self.funcDB = CommonFunction(func_url)
 
         self.verb_database = []
         self.entity_database_per = []
@@ -65,7 +65,6 @@ class UserPredict:
     def query(self, comment):
         result_dict = self.openInfoEngine.query(comment)
         # print(result_dict)
-
         # Determine the principal verb
         tags_0 = []
         n = 0
@@ -84,15 +83,9 @@ class UserPredict:
             tags_0.append(this)
             n += 1
         # print(tags_0)
-
         # We want the minimal number of tag O
         index_desire = tags_0.index(min(tags_0))
         best_verb_dict = result_dict["verbs"][index_desire]
-
-        """print("*********************")
-        print(best_verb_dict)
-        print("*********************")"""
-
         # Principal determined!
 
         self.verb_database.append(best_verb_dict['verb'])
@@ -139,7 +132,6 @@ class UserPredict:
                 orders.append('V')
         # print(arg_list)
         # print(orders)
-
         # arg_list = {'ARG0': 'Jerry', 'ARG2': 'Tom', 'ARG1': 'that he wanted to fuck him'}
 
         this_atom_clauses['args'] = arg_list

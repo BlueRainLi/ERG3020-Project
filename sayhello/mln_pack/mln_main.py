@@ -3,6 +3,7 @@ from pracmln import query, learn
 from pracmln.mlnlearn import EVIDENCE_PREDS
 import time
 from pracmln.utils import locs
+import pickle
 
 
 class InfResult:
@@ -13,25 +14,36 @@ class InfResult:
 
 
 class InferenceMachine:
-    def __init__(self, mln_path, db_path):
+    def __init__(self, mln_path, db_path, inf_res_url):
         self.db_path = db_path
         self.mln_path = mln_path
+        self.inf_res_url = inf_res_url
+        self.result = None
 
-    def engine(self, ask='steal', inf_res_url=None):
+    def engine(self, ask):
         try:
-            result = self.inference(ask)
-            print("$$$$$$$$$$$")
-            print("Inference for webpage!")
-            print(result)
-            print("$$$$$$$$$$$")
-            with open(inf_res_url, mode="w") as file:
-                for i in result.keys():
-                    file.write(str(i) + ':' + str(result[i]*100)[0:5])
-                    file.write("\n")
-            return True
+            self.result = self.inference(ask)
+            print("$$$$$$$$$$$$$$$$$$$$$$")
+            print(self.result)
+            print("$$$$$$$$$$$$$$$$$$$$$$")
+
+            mln_result_list = []
+            for i in self.result.keys():
+                prob_num = str((self.result[i]) * 100)[0:5]
+                this_obj = InfResult(i, prob_num)
+                mln_result_list.append(this_obj)
+            print(mln_result_list)
+
+            pickle_file = open(self.inf_res_url, "wb")
+
+            pickle.dump(mln_result_list, pickle_file)
+
+            print("finished!")
+            return mln_result_list
+
         except:
             print("Some error occurs during inference process!")
-            print("will use the last successful result...")
+            print("--will use the last successful result...")
             return False
 
     def inference(self, inference_query):

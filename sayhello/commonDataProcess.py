@@ -6,7 +6,7 @@ import pickle
 
 class CommonDatabase:
     def __init__(self, url):
-        self.url = os.path.dirname(app.root_path) + "/sayhello/commonData/" + url
+        self.url = url
         self.comments = self.fetch()
         self.number = len(self.comments)
 
@@ -60,7 +60,7 @@ class CommonDatabase:
 
 class CommonFunction:
     def __init__(self, url):
-        self.url = os.path.dirname(app.root_path) + "/sayhello/commonData/" + url
+        self.url = url
         self.funcs = self.fetch()
 
     def fetch(self):

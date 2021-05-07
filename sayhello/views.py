@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from flask import flash, redirect, url_for, render_template
 from sayhello import app, db
 from sayhello.forms import HelloForm
@@ -8,45 +7,40 @@ from sayhello.fact_entity_extraction import UserPredict
 from sayhello.commands import forge, initdb
 from sayhello.commonDataProcess import SingleFunction
 from sayhello.mln_pack.mln_utils import write_mln_files
-import os
 from sayhello.mln_pack.mln_main import InferenceMachine, InfResult
 import pickle
+import os
 
 
-utils = UserPredict(debug_mode=False)
-
-inf_res_url = os.path.dirname(app.root_path) + "/sayhello/mln_pack/result.txt"
+inf_res_url = os.path.dirname(app.root_path) + "/sayhello/mln_pack/result.pkl"
 mln_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/inference.mln"
 db_path = os.path.dirname(app.root_path) + "/sayhello/mln_pack/inference.db"
 func_url = os.path.dirname(app.root_path) + "/sayhello/commonData/func.pkl"
 nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/nen.cmdata"
 
-
-inf_machine = InferenceMachine(db_path=db_path, mln_path=mln_path)
-inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
+utils = UserPredict(nen_url=nen_url, func_url=func_url, debug_mode=True)
+inf_machine = InferenceMachine(db_path=db_path, mln_path=mln_path, inf_res_url=inf_res_url)
+functions_query = []
+answer_feedback = []
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    global functions_query
 
     fact_form = HelloForm()
-
     change = False
-
     if fact_form.validate_on_submit():
         change = True
         body = fact_form.body_textarea.data
         c_type = fact_form.c_type.data
         nl_body = body
-
         # Handle if user input facts
         if c_type == "Facts":
             query_result = utils.break_fact(body)
-
             print("*************************")
             print(query_result)
             print("*************************")
-
             if query_result:
                 body = str(query_result)
             else:
@@ -55,17 +49,14 @@ def index():
 
         if c_type == "Predicates":
             query_result = utils.break_logic(body)
-
             print("*************************")
             print(query_result)
             print("*************************")
-
             if query_result[0]:
                 nl_body = query_result[0]
             else:
                 # seems like with errors!
                 c_type = "Emotional"
-
             body = query_result[1]
 
         if c_type == "Emotional":
@@ -74,13 +65,10 @@ def index():
         message = Message(body=body, c_type=c_type, nl_body=nl_body)
         db.session.add(message)
         db.session.commit()
-
         flash('Published 1 comment.')
-
         return redirect(url_for('index'))
 
     messages = Message.query.order_by(Message.timestamp.desc()).all()
-
     facts = []
     predicates = []
     emotionals = []
@@ -98,38 +86,35 @@ def index():
     nen_org = ','.join(entity_dict['ORG'])
 
     funcs = utils.funcDB.fetch()
-
     complex_functions = []
     for i in funcs:
         this = SingleFunction(i)
         complex_functions.append(this)
 
-    result_stc = []
-    with open(inf_res_url, mode="r") as file:
-        for line in file:
-            if "\n" in line:
-                line = line.rstrip("\n")
-                print(line)
-                double = line.split(":")
-                this = InfResult(double[0], double[1])
-                result_stc.append(this)
+    # Read MLN result
 
-    #
+    # Extract functions in mln format
     functions_mln = []
+    functions_query = []
     for i in funcs:
         try:
+            if len(i['args']) == 1:
+                functions_query.append(i['verb'])
             functions_mln.append(i['function_mln'])
         except:
             print("bug handled!")
-    write_mln_files(facts, predicates, functions_mln, nen_per, nen_org, nen_loc, db_path, mln_path)
+    functions_query = ",".join(functions_query)
 
-    if change:
-        inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
+    print("===============")
+    print(functions_query)
+    print("===============")
+
+    # Write MLN KB files
+    write_mln_files(facts, predicates, functions_mln, nen_per, nen_org, nen_loc, db_path, mln_path)
 
     return render_template('index.html', fact_form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,
-                           nen_loc=nen_loc, nen_org=nen_org, functions=complex_functions,
-                           infresult=result_stc)
+                           nen_loc=nen_loc, nen_org=nen_org, functions=complex_functions, infresult=answer_feedback)
 
 
 @app.route('/refresh', methods=["GET"])
@@ -158,8 +143,11 @@ def refresh():
 
 @app.route('/refresh_inf', methods=["GET"])
 def refresh_inf():
+    global answer_feedback
+    print("====")
+    print(functions_query)
 
-    answer_feedback = inf_machine.engine(ask='steal', inf_res_url=inf_res_url)
+    answer_feedback = inf_machine.engine(functions_query)
 
     print("%%%%")
     print("Refreshed inference result.")
