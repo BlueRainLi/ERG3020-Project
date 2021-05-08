@@ -4,11 +4,9 @@ from sayhello import app, db
 from sayhello.forms import HelloForm
 from sayhello.models import Message
 from sayhello.natural_language_processing import UserPredict
-from sayhello.commands import forge, initdb
 from sayhello.data_read_write import SingleFunction
 from sayhello.mln_pack.mln_utils import write_mln_files
-from sayhello.mln_pack.mln_main import InferenceMachine, InfResult
-import pickle
+from sayhello.mln_pack.mln_main import InferenceMachine
 import os
 
 
@@ -26,8 +24,7 @@ answer_feedback = []
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global functions_query
-
+    global answer_feedback
     fact_form = HelloForm()
     change = False
     if fact_form.validate_on_submit():
@@ -137,15 +134,6 @@ def index():
     except:
         print("Write MLN db and mln failed...")
 
-    if answer_feedback:
-        for i in answer_feedback:
-            try:
-                nl_result = utils.predicate_query(i.event)
-                print("RESULT COMPILED!", nl_result)
-                i.event = nl_result
-            except:
-                pass
-
     return render_template('index.html', fact_form=fact_form,
                            predicates=predicates, facts=facts, emotionals=emotionals, nen_per=nen_per,
                            nen_loc=nen_loc, nen_org=nen_org, functions=complex_functions, infresult=answer_feedback)
@@ -190,7 +178,19 @@ def clear_func():
 def refresh_inf(query_string):
     global answer_feedback
 
-    answer_feedback = inf_machine.engine(functions_query)
+    answer_feedback = inf_machine.engine(query_string)
+
+    if answer_feedback:
+        for i in answer_feedback:
+            try:
+                print("###################")
+                print(i.event)
+                print("###################")
+                nl_result = utils.predicate_query(i.event)
+                print("RESULT COMPILED!", nl_result)
+                i.event = nl_result
+            except:
+                pass
 
     print("%%%%")
     print("Refreshed inference result.")
