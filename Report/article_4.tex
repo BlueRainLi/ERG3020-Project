@@ -164,6 +164,8 @@ We have to deal with the natural language records so that we have to choose some
 The markov networks model used in this project comes from the article written by Richardson and Domingos in 2006 \cite{richardson2006markov}. The below statements in this subsection are from the article.
 
 A Markov network (also known as Markov random field) is a model for the joint distribution of a set of variables $X = (X_1,X_2,\cdots,X_n) \in X$. The joint distribution represented by a Markov network is given by
+
+
 \begin{equation}
     P(X=x)=\frac{1}{Z}\prod_k\phi_k(x_{(k)})
 \end{equation}
@@ -182,11 +184,32 @@ All the formulas and the constants in the Markov Logic Networks have to meet the
 \begin{enumerate}[noitemsep]
     \item \textbf{Unique names.} \textit{Different constants refer to different objects.}
     \item \textbf{Domain closure.} \textit{The only objects in the domain are those representable using the constant and function symbols in $(L,C)$}
-    \item \textbf{Known functions.} \textit{For each function appearing in $L$, the value of the function applied to every possible tuple of arguments is known, and is a element of $C$.}
+    \item \textbf{Known functions.} \textit{For each function appearing in $L$, the value of the function applied to every possible tuple of arguments is known, and is an element of $C$.}
 \end{enumerate}
 
 
 \section{The Architecture of Jianfeng Demo}
+
+\subsection{Users Can Post 3 Kinds of Comments}
+
+Difference from traditional social network, here users can choose 3 different columns to post their comments: \textit{Facts, Predicates, Emotional}. 
+
+For \textit{Facts} column, users can post the facts they have mastered. For example, if the user know that \textit{Albert accuses Bob of stealing the final paper}, he or she could type \textit{Albert accuses Bob of stealing the final paper}. To make sure that the facts are valid, citation and source verification features will be added in the future.
+
+\begin{figure}[htb]
+    \centering 
+    \includegraphics[width=\columnwidth]{arch1.png} 
+    \caption[Prompting Users to Post facts]{Prompting Users to Post facts} 
+    \end{figure}
+
+For \textit{Predicates} column, users can post their own judgements and theories. These predicates are general and can reveal their thoughts. To make sure the meaning of the logic expression is correct, we only accept First Order Logic expressions. We expect well educated users to post on \textit{Predicates} column. To make this process more smooth, we provide a toolbox for our users. For example, we provide widely used logic operators, function library, undetermined objects.
+
+\begin{figure}[htb]
+    \centering 
+    \includegraphics[width=\columnwidth]{arch3.png} 
+    \caption[Prompting Users to Post facts]{Prompting Users to Post Facts} 
+    \end{figure}
+
 \subsection{For Less Educated Users}
 
 Jianfeng is desgined to the serve the public, and its users are mainly less educated users. Less educated users accounts for the majority of our users. So, we carefully designed the architecture of Jianfeng. 
@@ -213,7 +236,17 @@ The next step is to utilize AllenNLP Named Entity Recognition module to check ea
 
 After we extract the function mode, we will first append this function to the library, in Jianfeng Demo, we call it \textit{The Actions Extracted From User Comments}. But in consideration the experience of less educated users, we design an algorithm to convert functions into natural language expressions. For example, if the user submitted \textit{Albert accuses Bob of stealing the money}, we will first extract the function mode and store it into \textit{action library} and then compile it into natural language expression, then display it on the front end.
 
-Less educated users can also post emotional comments. We give them a choice to post whatever they want. Users can choose \textit{}
+Less educated users can also post emotional comments. We give them a choice to post whatever they want. Users can choose \textit{Emotional} module to post their comments. 
+
+We also design an algorithm to convert First Order Logic expression into natural language. Because some well educated users can post First Order Logic expressions and complex expressions, it is usually hard to read for less educated users. It is necessary to convert every piece of logic expression into natural language. 
+
+\begin{figure}[htb]
+    \centering 
+    \includegraphics[width=\columnwidth]{nlp3.png} 
+    \caption[Natural Language Converted]{Natural Language Converted} 
+    \end{figure}
+
+To realize such function, we 
 
 \begin{figure}[htb]
     \centering 
