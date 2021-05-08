@@ -1,26 +1,28 @@
-\contentsline {section}{\numberline {1}{Introduction}}{2}{section.1}%
-\contentsline {subsection}{\numberline {1.1}{The Properties of Markov Network and the Origin of Our Idea}}{2}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}{Why We Use The First Order Logic}}{3}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}{The Nature of Markov Logic Networks}}{3}{subsection.1.3}%
-\contentsline {subsection}{\numberline {1.4}{The Components of Markov Logic Networks}}{3}{subsection.1.4}%
-\contentsline {section}{\numberline {2}{Knowledges used in the Project}}{4}{section.2}%
-\contentsline {subsection}{\numberline {2.1}{Natural Language Processing}}{4}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}{Markov Logic Networks}}{4}{subsection.2.2}%
-\contentsline {section}{\numberline {3}{Packages used in the Project}}{5}{section.3}%
-\contentsline {subsection}{\numberline {3.1}{Natural Language Processing}}{5}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}{Markov Logic Networks}}{5}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}{Flask}}{5}{subsection.3.3}%
-\contentsline {section}{\numberline {4}{Example}}{7}{section.4}%
-\contentsline {section}{\numberline {5}{Conclusion and further development}}{7}{section.5}%
-\contentsline {section}{\numberline {6}{Introduction}}{7}{section.6}%
-\contentsline {section}{\numberline {7}{Methods}}{8}{section.7}%
-\contentsline {subsection}{\numberline {7.1}{Paragraphs}}{8}{subsection.7.1}%
-\contentsline {paragraph}{{Paragraph Description}}{9}{paragraph*.2}%
-\contentsline {paragraph}{{Different Paragraph Description}}{9}{paragraph*.3}%
-\contentsline {subsection}{\numberline {7.2}{Math}}{9}{subsection.7.2}%
-\contentsline {section}{\numberline {8}{Results and Discussion}}{10}{section.8}%
-\contentsline {subsection}{\numberline {8.1}{Subsection}}{10}{subsection.8.1}%
-\contentsline {subsubsection}{\numberline {8.1.1}{Subsubsection}}{11}{subsubsection.8.1.1}%
-\contentsline {subsubsection}{\numberline {8.1.2}{Table}}{11}{subsubsection.8.1.2}%
-\contentsline {subsection}{\numberline {8.2}{Figure Composed of Subfigures}}{12}{subsection.8.2}%
-\contentsline {section}{\numberline {A}{A guidence to running code}}{14}{appendix.A}%
+\contentsline {section}{\numberline {1}{Introduction}}{3}{section.1}% 
+\contentsline {subsection}{\numberline {1.1}{The Properties of Markov Network and the Origin of Our Idea}}{3}{subsection.1.1}% 
+\contentsline {subsection}{\numberline {1.2}{Why We Use The First Order Logic}}{4}{subsection.1.2}% 
+\contentsline {subsection}{\numberline {1.3}{The Nature of Markov Logic Networks}}{4}{subsection.1.3}% 
+\contentsline {subsection}{\numberline {1.4}{The Components of Markov Logic Networks}}{4}{subsection.1.4}% 
+\contentsline {section}{\numberline {2}{Knowledges used in the Project}}{5}{section.2}% 
+\contentsline {subsection}{\numberline {2.1}{Natural Language Processing}}{5}{subsection.2.1}% 
+\contentsline {subsection}{\numberline {2.2}{Markov Logic Networks}}{5}{subsection.2.2}% 
+\contentsline {section}{\numberline {3}{The Architecture of Jianfeng Demo}}{6}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}{For Less Educated Users}}{6}{subsection.3.1}% 
+\contentsline {section}{\numberline {4}{Packages used in the Project}}{8}{section.4}% 
+\contentsline {subsection}{\numberline {4.1}{Natural Language Processing}}{8}{subsection.4.1}% 
+\contentsline {subsection}{\numberline {4.2}{Markov Logic Networks}}{8}{subsection.4.2}% 
+\contentsline {subsection}{\numberline {4.3}{Flask}}{9}{subsection.4.3}% 
+\contentsline {section}{\numberline {5}{Example}}{10}{section.5}% 
+\contentsline {section}{\numberline {6}{Conclusion and further development}}{10}{section.6}% 
+\contentsline {section}{\numberline {7}{Introduction}}{10}{section.7}% 
+\contentsline {section}{\numberline {8}{Methods}}{11}{section.8}% 
+\contentsline {subsection}{\numberline {8.1}{Paragraphs}}{11}{subsection.8.1}% 
+\contentsline {paragraph}{{Paragraph Description}}{12}{paragraph*.5}% 
+\contentsline {paragraph}{{Different Paragraph Description}}{12}{paragraph*.6}% 
+\contentsline {subsection}{\numberline {8.2}{Math}}{12}{subsection.8.2}% 
+\contentsline {section}{\numberline {9}{Results and Discussion}}{13}{section.9}% 
+\contentsline {subsection}{\numberline {9.1}{Subsection}}{14}{subsection.9.1}% 
+\contentsline {subsubsection}{\numberline {9.1.1}{Subsubsection}}{14}{subsubsection.9.1.1}% 
+\contentsline {subsubsection}{\numberline {9.1.2}{Table}}{14}{subsubsection.9.1.2}% 
+\contentsline {subsection}{\numberline {9.2}{Figure Composed of Subfigures}}{15}{subsection.9.2}% 
+\contentsline {section}{\numberline {A}{A guidence to running code}}{17}{appendix.A}% 
