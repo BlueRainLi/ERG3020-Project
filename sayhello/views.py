@@ -17,7 +17,7 @@ func_url = os.path.dirname(app.root_path) + "/sayhello/commonData/func.pkl"
 nen_url = os.path.dirname(app.root_path) + "/sayhello/commonData/nen.cmdata"
 
 
-utils = UserPredict(nen_url=nen_url, func_url=func_url, debug_mode=True)
+utils = UserPredict(nen_url=nen_url, func_url=func_url, debug_mode=False)
 inf_machine = InferenceMachine(db_path=db_path, mln_path=mln_path)
 answer_feedback = []
 
