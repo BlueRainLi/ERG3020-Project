@@ -78,7 +78,7 @@ BCOR5mm, % Binding correction
 
 \section*{Abstract} % This section will not appear in the table of contents due to the star (\section*)
 
-This project is a demo of social network comment section with a special algorithm on the sorting and the presentation of comments. We aim at find and tell the truth so that we combine Natural Language Processing and Markov Networks to make a demo of social network comment section and we hope that a better social network comment section can be guaranteed.
+This project is a demo of social network comment section with a special algorithm on the sorting and the presentation of comments. We aim at find and tell the truth so that we combine Natural Language Processing and Markov Logic Network to make a demo of social network comment section and we hope that a better social network comment section can be guaranteed. The distinguishment of this project lies in, we utilize Markov Logic Network in social network and help to improve the cyberspace atmosphere, and to provide a better place to find the general will of people, to help find the underlying truth of mysterious event like the emergence of COVID-19.
 
 
 
@@ -98,6 +98,22 @@ This project is a demo of social network comment section with a special algorith
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
 \section{Introduction}
+
+\subsection{Background: Why We Want to Build Such a New Kind Of Social Network}
+
+The outbreak of New Coronavirus Pandemic in late 2019 and early 2020 attracted some attention on social networks when the outbreak was in its nascent stage, but due to algorithmic flaws in today's social networks, we were not able to make timely judgments and speculations about the pandemic. A review of social media messages from the early stages of the outbreak shows that some people were already aware of the details and others were already alerting people to the outbreak at least until December 15. By December 27, the classification of the virus had already been determined. The local hospital in Wuhan could not have been unaware of the facts either, but for various reasons, this information was not used effectively.
+
+Learning from the lessons of the epidemic, we wanted to develop a new kind of social network that could make full use of the information provided by users, weigh the relationships between the various pieces of information, and make use of existing a priori knowledge, while being able to learn and evolve itself. Therefore, we chose Markov Logic Networks to do this.
+
+Combined with the natural language processing technology, we were able to reach a wide range of users and ensure that the platform is easy to understand.
+
+We call our new social network Jianfeng in respect to our statistical inference instructor Prof. Jianfeng MAO. 
+
+In this demo, we have implemented most of the features of the above ideal social network using the Python flask framework. All the natural language processing, inference process, is dynamic rather than static.
+
+In this demo, we use a relatively small problem scenario.
+\textit{The Albert, Bob, David gang steals a final exam paper and causes a huge backlash on the school's social network.} We want to use what people say on the social network to infer who stole the test and who lied about it.
+
 \subsection{The Properties of Markov Network and the Origin of Our Idea}
 Markov Network is an undirected graphical model for representing dependencies between random variables.
 
