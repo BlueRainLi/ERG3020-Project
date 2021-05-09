@@ -225,24 +225,34 @@ For \textit{Emotional} column. In this column, users are welcomed to post everyt
 
 \subsection{For Less Educated Users}
 
+
 Jianfeng is desgined to the serve the public, and its users are mainly less educated users. Less educated users accounts for the majority of our users. So, we carefully designed the architecture of Jianfeng. 
 
-
-Less educated users can post the facts they know just by typing English sentences. 
 \begin{figure}[htb]
     \centering 
     \includegraphics[width=\columnwidth]{fact_usr.png} 
     \caption[Prompting User to Commit Facts]{Prompting User to Commit Facts} 
     \end{figure}
 
+Less educated users can post the facts they know just by typing English sentences. 
+
+
 The facts in natural language will be processed by AllenNLP Open Information Extraction module [cite: https://demo.allennlp.org/open-information-extraction] first. The result given by AllenNLP is as follows:
+
 \begin{figure}[htb]
     \centering 
     \includegraphics[width=\columnwidth]{nlp1.png} 
     \caption[Primary Result Given by AllenNLP Open Information Extraction module]{Primary Result Given by AllenNLP Open Information Extraction module} 
     \end{figure}
+
 AllenNLP gives multiple results of one single sentence, and we want to find one that can best model that sentence. We choose the verb which can recognize most words as its arguments. We call that verb the best verb of that sentence. 
 
+\begin{figure}[htb]
+    \centering 
+    \includegraphics[width=\columnwidth]{nlp3.png} 
+    \caption[Natural Language Converted]{Natural Language Converted} 
+    \end{figure}
+    
 Then we consider the best verb and its arguments. For example, we input the sentence \textit{Albert accuses Bob of stealing the final paper.}, and the output has two possible results: \textit{accuse} and \textit{steal}. Then we choose \textit{accuse} as our best verb because it can utilize 3 components as its arguments.
 
 The next step is to utilize AllenNLP Named Entity Recognition module to check each argument to see if it is a named entity, for example, \textit{Albert} and \textit{Bob} will be recognized as \textit{Person}; \textit{of stealing the final paper} will be not recognized. Then, we append \textit{of stealing the final paper} to the verb and only keep \textit{Albert} and \textit{Bob} as arguments. Then we can construct the function $accuses\_of\_stealing\_the\_final\_paper$ with two input arguments \textit{ARG0: Person} and \textit{ARG1: Person}. Here we can express this fact as $accuse\_of\_stealing\_the\_final\_paper \left(Albert, Bob\right)$. 
@@ -253,15 +263,34 @@ Less educated users can also post emotional comments. We give them a choice to p
 
 We also design an algorithm to convert First Order Logic expression into natural language. Because some well educated users can post First Order Logic expressions and complex expressions, it is usually hard to read for less educated users. It is necessary to convert every piece of logic expression into natural language. And we realize this function in Jianfeng demo.
 
+
+
+
+\subsection{Cumulative Action Library}
+
+Jianfeng Demo will continuously collect actions submitted by users. Once user post a fact containing valid information, we will automatically analyze the action mode in this sentence. Then it will be stored in our \textit{Action Library} and we will convert it into a form which can be easily understood by users and then display them on the front end.
+
+Users can submit new \textit{action modes} to \textit{Action Library}. We provide a column for users to submit new mode. Users only need to provide a sentence in this dialogue, and they don't need think about the details. We will automatically analyze the sentence and extract the \textit{action mode} in this sentence. 
+
+Besides, the \textit{Action Library} in Jianfeng Demo is cumulative. We will keep all the \textit{action modes} in our database, and once a new event emerges, users can conveniently use previously defined \textit{action modes}.
+
+We expect in a few months, we can collect all the possible action modes in human language. In that case, we will provide more complete toolbox for educated users who have a good command of First Order Logic to composite their predicates. 
+
+Furthermore, the \textit{action modes} in consideration within an event comply with the following conditions:
+
+1. That \textit{action mode} is mentioned in \textit{Facts}.
+
+2. That \textit{action mode} is mentioned in \textit{Predicates}.
+
+\textit{Action modes} satisfy the above conditions will be declared in Markov Logic Network inference process. 
+
 \begin{figure}[htb]
     \centering 
-    \includegraphics[width=\columnwidth]{nlp3.png} 
-    \caption[Natural Language Converted]{Natural Language Converted} 
+    \includegraphics[width=\columnwidth]{arch9.png} 
+    \caption[Action Mode Submission Dialog]{Action Mode Submission Dialog} 
     \end{figure}
 
-
-
-
+\subsection{Cumulating Predicate Library} 
 
 \begin{figure}[htb]
     \centering 
