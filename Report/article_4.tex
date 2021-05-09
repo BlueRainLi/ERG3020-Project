@@ -274,7 +274,7 @@ Users can submit new \textit{action modes} to \textit{Action Library}. We provid
 
 Besides, the \textit{Action Library} in Jianfeng Demo is cumulative. We will keep all the \textit{action modes} in our database, and once a new event emerges, users can conveniently use previously defined \textit{action modes}.
 
-We expect in a few months, we can collect all the possible action modes in human language. In that case, we will provide more complete toolbox for educated users who have a good command of First Order Logic to composite their predicates. 
+We expect in a few months, we can collect all the possible action modes in human language. In that case, we will provide more complete toolbox for educated users who have a good command of First Order Logic to composite their predicates.
 
 Furthermore, the \textit{action modes} in consideration within an event comply with the following conditions:
 
@@ -282,7 +282,13 @@ Furthermore, the \textit{action modes} in consideration within an event comply w
 
 2. That \textit{action mode} is mentioned in \textit{Predicates}.
 
-\textit{Action modes} satisfy the above conditions will be declared in Markov Logic Network inference process. 
+\textit{Action modes} satisfy the above conditions will be declared in Markov Logic Network inference process (refer to Components of Markov Logic Network part). 
+
+\begin{figure}[htb]
+    \centering 
+    \includegraphics[width=\columnwidth]{nlp2.png} 
+    \caption[Natural Language Expression of Action Library]{Natural Language Expression of Action Library} 
+    \end{figure}
 
 \begin{figure}[htb]
     \centering 
@@ -290,13 +296,12 @@ Furthermore, the \textit{action modes} in consideration within an event comply w
     \caption[Action Mode Submission Dialog]{Action Mode Submission Dialog} 
     \end{figure}
 
-\subsection{Cumulating Predicate Library} 
+\subsection{Cumulative Predicate Library} 
 
-\begin{figure}[htb]
-    \centering 
-    \includegraphics[width=\columnwidth]{nlp2.png} 
-    \caption[Natural Language Expression of Action Library]{Natural Language Expression of Action Library} 
-    \end{figure}
+The \textit{Predicates} are of vital importance in Markov Logic Network, they can help to construct the whole network. Some general \textit{Predicates} can be utilized in many cases automatically. That helps to improve the inference result. 
+
+Besides, because Markov Logic Network can learn from the final results, thus determining the \textit{weights} of each \textit{predicate}, it is important to determine the \textit{weight} of each \textit{predicate}. Jianfeng system is designed to perform MLN learning process once we know the posterior results. Then we can determine the \textit{weights} of each \textit{predicates} in the corresponding event. Because sometimes the learning result is not in $(0,1)$. Then we use logistic function to convert them into $(0,1)$. The next problem is to find the relative \textit{weights} in case two irrelative \textit{predicates} come together. To solve the problem, we should first operate Jianfeng system for months, collect enough scenarios. Then perform a global MLN training. Then we can get an overall predicate ranking list.
+
 
 \section{Packages used in the Project}
 \subsection{Natural Language Processing}
