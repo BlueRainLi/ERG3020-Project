@@ -142,3 +142,7 @@ sayhello/source/ner-elmo.2021-02-12.tar.gz
 
 
 *.pyc
+*.pdf
+*.toc
+*.out
+Report/article_4.synctex.gz

@@ -3,7 +3,7 @@ import os
 import sys
 from sayhello import app
 from nltk.stem.wordnet import WordNetLemmatizer
-from sayhello.commonDataProcess import CommonDatabase, CommonFunction
+from sayhello.data_read_write import CommonDatabase, CommonFunction
 import re
 import copy
 
@@ -62,7 +62,7 @@ class UserPredict:
         self.entity_database_org = []
         self.entity_database_loc = []
 
-    def query(self, comment):
+    def query(self, comment, submit_func=False):
         result_dict = self.openInfoEngine.query(comment)
         # print(result_dict)
         # Determine the principal verb
@@ -240,15 +240,14 @@ class UserPredict:
         print(this_atom_clauses)
         print("^^^^^^^^^^^^^^^^^^^")
 
-        # Commit Entities
-        for i in range(len(this_atom_clauses['args'])):
-            self.commonDB.add(this_atom_clauses['args'][i], this_atom_clauses['no_false_list'][i])
-        self.commonDB.commit()
+        if not submit_func:
+            for i in range(len(this_atom_clauses['args'])):
+                self.commonDB.add(this_atom_clauses['args'][i], this_atom_clauses['no_false_list'][i])
+            self.commonDB.commit()
 
         # Commit Functions
         self.funcDB.add(this_atom_clauses)
         self.funcDB.commit()
-
         return atom_clause
 
     def entity_processing(self, arg):
@@ -336,8 +335,9 @@ class UserPredict:
         # print(args_type)
 
         nl = ""
-
+        # print("GRAMMAR ===", grammar)
         for i in grammar:
+            # print(i)
             if i == "V":
                 give = result['pure_verb']
                 if neg:
@@ -347,6 +347,11 @@ class UserPredict:
                     give = args_type[i]
                 else:
                     give = args[i]
+            elif "NEG" in i:
+                give = ""
+            else:
+                give = ""
+            # print(give)
             nl = nl + " " + give
 
         print("$$$$$$$ "+nl+" $$$$$$$")
@@ -414,6 +419,10 @@ class UserPredict:
         else:
             output = False
             refine = False
+
+        print("============================= nl_list")
+        print(nl_list)
+        print("============================= nl_list")
 
         return output, refine
 
