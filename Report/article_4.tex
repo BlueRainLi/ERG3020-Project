@@ -206,9 +206,22 @@ For \textit{Predicates} column, users can post their own judgements and theories
 
 \begin{figure}[htb]
     \centering 
-    \includegraphics[width=\columnwidth]{arch3.png} 
+    \includegraphics[width=\columnwidth]{arch5.png} 
     \caption[Prompting Users to Post facts]{Prompting Users to Post Facts} 
     \end{figure}
+    
+After users post their \textit{Predicates}, their logic expressions will be stored in our system and we design an algorithm to convert the logic expression into natural language. We display the natural language version of the \textit{Predicates} on the front end, other users can give \textit{likes} to each \textit{Predicates}. We will determine the \textit{weights} of the \textit{Predicates}. The \textit{weights} of each \textit{Predicates} are important in Markov Logic Network, they are the \textit{strength} of constraints.
+
+For \textit{Emotional} column. In this column, users are welcomed to post everything they want. This column is an area for users to post their emotional comments, and if users post emotional comments in \textit{Facts} column, the comments will be transferred to this column because we also design an algorithm to recognize if the comments are really \textit{Facts} or \textit{Predicates}. 
+
+
+\begin{figure}[htb]
+    \centering 
+    \includegraphics[width=\columnwidth]{arch8.png} 
+    \caption[Displaying the Comments on Front End]{Displaying the Comments on Front End} 
+    \end{figure}
+
+
 
 \subsection{For Less Educated Users}
 
@@ -238,7 +251,7 @@ After we extract the function mode, we will first append this function to the li
 
 Less educated users can also post emotional comments. We give them a choice to post whatever they want. Users can choose \textit{Emotional} module to post their comments. 
 
-We also design an algorithm to convert First Order Logic expression into natural language. Because some well educated users can post First Order Logic expressions and complex expressions, it is usually hard to read for less educated users. It is necessary to convert every piece of logic expression into natural language. 
+We also design an algorithm to convert First Order Logic expression into natural language. Because some well educated users can post First Order Logic expressions and complex expressions, it is usually hard to read for less educated users. It is necessary to convert every piece of logic expression into natural language. And we realize this function in Jianfeng demo.
 
 \begin{figure}[htb]
     \centering 
@@ -246,7 +259,9 @@ We also design an algorithm to convert First Order Logic expression into natural
     \caption[Natural Language Converted]{Natural Language Converted} 
     \end{figure}
 
-To realize such function, we 
+
+
+
 
 \begin{figure}[htb]
     \centering 
