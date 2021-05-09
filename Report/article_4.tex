@@ -149,7 +149,7 @@ Before we get started, we shall first define the components of MLN. MLN consists
     \item \textbf{Knowledge Base} {Some facts about this possible world, written in FOL. For example, "Tom accuses Bill of stealing the money" is represented as "accuseofstealingmoney\(Tom,Bill\)".}
     \item \textbf{Function Declaration} {Some functions mentioned in the world, written in FOL. For example, "accuseofstealing\(person,person\)". This function has two inputs, the first argument is a person and the second argument is also a person.}
     \item \textbf{Named Entities} {Some entities that belong to some specific categories. For example, "person = \{Tom, Jerry, Bob, Nazarbayev\}".}
-    \item \textbf{Predicates \(Constrains\)} {Some general rules without pointing out any named entities, objects in the constrians are represented as x,y,z, and some underdetermined objects. For example, stealthemoney\(x\)\^\!accuseofstealing\(x,y\) then lie\(y\) means "if x stole the money and y did not accuse x of stealing money y lied."}
+    \item \textbf{Predicates \(Constrains\)} {Some general rules without pointing out any named entities, objects in the constrians are represented as x,y,z, and some underdetermined objects.\newline For example, steal\_the\_money(x) $\land$ !accuse\_of\_stealing(x,y) then lie(y) means "if x stole the money and y did not accuse x of stealing money y lied."}
 \end{enumerate}
 
 
@@ -187,6 +187,22 @@ All the formulas and the constants in the Markov Logic Networks have to meet the
     \item \textbf{Known functions.} \textit{For each function appearing in $L$, the value of the function applied to every possible tuple of arguments is known, and is an element of $C$.}
 \end{enumerate}
 
+\section{Packages used in the Project}
+\subsection{Natural Language Processing}
+The NLP package used in this project is \textbf{AllenNLP} \cite{Gardner2017AllenNLP}. We use the methods of AllenNLP to do text segmentations, transfer the texts into first order logic and atomic sentences so that we can match the requirements from the Markov Logic Network.
+
+\subsection{Markov Logic Networks}
+\textbf{Pracmln} is a toolbox for statistical relational learning and reasoning and as such also includes tools for standard graphical models \cite{pracmln}. We use this package to build the markov logic networks and give the results.
+\subsection{Flask}
+\textbf{Flask} is a micro web framework written in Python 
+\cite{grinberg2018flask}. We use \textbf{Flask} to show the demo of social network comments section. From the \textbf{figure 1}:
+\begin{figure}[htb]
+    \centering 
+    \includegraphics[width=\columnwidth]{Flask.png} 
+    \caption[An Screenshot of the website]{An Screenshot of the website} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+    \end{figure}
+
+we can find that we can input and post comments in a text area. We even can choose the type of the comments. However, if we choose the wrong type, the NLP model will indentify it and change the type into the correct one. All of the comments will be showed below the text area. Also, the names and functions in the comments will be showed in the left sides. The result of the Markov Logic Networks will be showed below them.
 
 \section{The Architecture of Jianfeng Demo}
 
@@ -208,7 +224,7 @@ For \textit{Predicates} column, users can post their own judgements and theories
     \centering 
     \includegraphics[width=\columnwidth]{arch5.png} 
     \caption[Prompting Users to Post facts]{Prompting Users to Post Facts} 
-    \end{figure}
+\end{figure}
     
 After users post their \textit{Predicates}, their logic expressions will be stored in our system and we design an algorithm to convert the logic expression into natural language. We display the natural language version of the \textit{Predicates} on the front end, other users can give \textit{likes} to each \textit{Predicates}. We will determine the \textit{weights} of the \textit{Predicates}. The \textit{weights} of each \textit{Predicates} are important in Markov Logic Network, they are the \textit{strength} of constraints.
 
@@ -274,7 +290,7 @@ Users can submit new \textit{action modes} to \textit{Action Library}. We provid
 
 Besides, the \textit{Action Library} in Jianfeng Demo is cumulative. We will keep all the \textit{action modes} in our database, and once a new event emerges, users can conveniently use previously defined \textit{action modes}.
 
-We expect in a few months, we can collect all the possible action modes in human language. In that case, we will provide more complete toolbox for educated users who have a good command of First Order Logic to composite their predicates.
+We expect in a few months, we can collect all the possible action modes in human language. In that case, we will provide more complete toolbox for educated users who have a good command of First Order Logic to composite their predicates. 
 
 Furthermore, the \textit{action modes} in consideration within an event comply with the following conditions:
 
@@ -282,13 +298,7 @@ Furthermore, the \textit{action modes} in consideration within an event comply w
 
 2. That \textit{action mode} is mentioned in \textit{Predicates}.
 
-\textit{Action modes} satisfy the above conditions will be declared in Markov Logic Network inference process (refer to Components of Markov Logic Network part). 
-
-\begin{figure}[htb]
-    \centering 
-    \includegraphics[width=\columnwidth]{nlp2.png} 
-    \caption[Natural Language Expression of Action Library]{Natural Language Expression of Action Library} 
-    \end{figure}
+\textit{Action modes} satisfy the above conditions will be declared in Markov Logic Network inference process. 
 
 \begin{figure}[htb]
     \centering 
@@ -296,29 +306,14 @@ Furthermore, the \textit{action modes} in consideration within an event comply w
     \caption[Action Mode Submission Dialog]{Action Mode Submission Dialog} 
     \end{figure}
 
-\subsection{Cumulative Predicate Library} 
-
-The \textit{Predicates} are of vital importance in Markov Logic Network, they can help to construct the whole network. Some general \textit{Predicates} can be utilized in many cases automatically. That helps to improve the inference result. 
-
-Besides, because Markov Logic Network can learn from the final results, thus determining the \textit{weights} of each \textit{predicate}, it is important to determine the \textit{weight} of each \textit{predicate}. Jianfeng system is designed to perform MLN learning process once we know the posterior results. Then we can determine the \textit{weights} of each \textit{predicates} in the corresponding event. Because sometimes the learning result is not in $(0,1)$. Then we use logistic function to convert them into $(0,1)$. The next problem is to find the relative \textit{weights} in case two irrelative \textit{predicates} come together. To solve the problem, we should first operate Jianfeng system for months, collect enough scenarios. Then perform a global MLN training. Then we can get an overall predicate ranking list.
+\subsection{Cumulating Predicate Library} 
 
 
-\section{Packages used in the Project}
-\subsection{Natural Language Processing}
-The NLP package used in this project is \textbf{AllenNLP} \cite{Gardner2017AllenNLP}. We use the methods of AllenNLP to do text segmentations, transfer the texts into first order logic and atomic sentences so that we can match the requirements from the Markov Logic Network.
-
-\subsection{Markov Logic Networks}
-\textbf{Pracmln} is a toolbox for statistical relational learning and reasoning and as such also includes tools for standard graphical models \cite{pracmln}. We use this package to build the markov logic networks and give the results.
-\subsection{Flask}
-\textbf{Flask} is a micro web framework written in Python 
-\cite{grinberg2018flask}. We use \textbf{Flask} to show the demo of social network comments section. From the \textbf{figure 1}:
 \begin{figure}[htb]
     \centering 
-    \includegraphics[width=\columnwidth]{Flask.png} 
-    \caption[An Screenshot of the website]{An Screenshot of the website} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+    \includegraphics[width=\columnwidth]{nlp2.png} 
+    \caption[Natural Language Expression of Action Library]{Natural Language Expression of Action Library} 
     \end{figure}
-
-we can find that we can input and post comments in a text area. We even can choose the type of the comments. However, if we choose the wrong type, the NLP model will indentify it and change the type into the correct one. All of the comments will be showed below the text area. Also, the names and functions in the comments will be showed in the left sides. The result of the Markov Logic Networks will be showed below them.
 
 \clearpage
 
